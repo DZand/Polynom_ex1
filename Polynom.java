@@ -19,18 +19,17 @@ public class Polynom implements Polynom_able
 
 	private ArrayList<Monom> listOfMonom;
 	/**
-	 * Zero (empty polynom)
+	 * Zero (empty polynom). Constructor with no parameters, create the zero polynom
 	 * @throws _Exception 
 	 */
 	public Polynom() throws _Exception 
 	{
 		this.listOfMonom=new ArrayList<Monom>();
-		this.add(Monom.ZERO);
-		
+		this.add(new Monom(0,0));
 	}
 	/**
-	 * init a Polynom from a String such as:
-	 *  {"x", "3+1.4X^3-34x", "(2x^2-4)*(-1.2x-7.1)", "(3-3.4x+1)*((3.1x-1.2)-(3X^2-3.1))"};
+	 * This is a constructor, that init a Polynom from a String such as:
+	 *  {"x", "3+1.4X^3-34x"} with no complex polynom
 	 * @param s: is a string represents a Polynom
 	 * @throws _Exception 
 	 */
@@ -41,15 +40,22 @@ public class Polynom implements Polynom_able
 		isPolynomStringValid(s);
 		this.listOfMonom=new ArrayList<Monom>() ;
 		s = s.replaceAll("-", "+-");
-		String [] splitPolynom =s.split ("+");
+		String [] splitPolynom =s.split ("\\+");
 		for(int i=0;i<splitPolynom.length;i++)
 		{
 			this.add(new Monom(splitPolynom[i]));
 		}
-		this.listOfMonom.add(new Monom(0,0));
+		//this.listOfMonom.add(new Monom(0,0));
 		this.listOfMonom.sort(comperatorTemp);
-		//this.zero_union();
 	}
+	
+	/**
+	 * This function calculate the y value after filling x in f(x) polynom.
+	 * user the f function of the monom class
+	 * @param x: value of x to be put in f(x)
+	 * @return sum: return the polynom value in specific x
+	 * 
+	 */
 	@Override
 	public double f(double x) 
 	{
@@ -62,7 +68,11 @@ public class Polynom implements Polynom_able
 		}
 		return sum;
 	}
-
+	/**
+	*This function add a Polynom to exisiting polynom 
+ 	* @param p1: Polynom to be added
+ 	* @throws _Exception 
+ 	*/
 	@Override
 	public void add(Polynom_able p1) throws _Exception 
 	{
@@ -73,31 +83,49 @@ public class Polynom implements Polynom_able
 			Monom temp= iter.next();
 			this.add(temp);
 		}
+		this.removeZZeroMonoms();
 		this.listOfMonom.sort(comperatorTemp);
 	}
 
+	/**
+	 * This function add one monom to existing polynom
+	 * @param m1: the monom that need to be added
+	 * @throws _Exception
+	 */
 	@Override
 	public void add(Monom m1) throws _Exception 
 	{
-		boolean powerExist=false;
 		Monom_Comperator comperatorTemp=new Monom_Comperator();
-		Iterator<Monom> iter=iteretor();
-		while(iter.hasNext())
+		boolean flag = true;
+		for(Monom it: this.listOfMonom) 
 		{
-			Monom temp= iter.next();
-			if(comperatorTemp.compare(temp, m1)==0)
+			if(it.get_power() == m1.get_power()) 
 			{
-				temp.set_coefficient(m1.get_coefficient()+temp.get_coefficient());
-				powerExist=true;
-			}
-			if(!powerExist)
-			{
-				listOfMonom.add(m1);
+				it.add(m1);
+				//it.set_coefficient(it.get_coefficient() + m1.get_coefficient());
+				if(it.get_coefficient()==0)
+				{
+					it.set_power(0);
+				}
+				flag = false;
 			}
 		}
+		this.removeZZeroMonoms();
+		if(flag)
+		{
+			this.listOfMonom.add(m1);
+		}
+		//RemoveSamePower(this);
+		//Reset_Coefficient();
 		this.listOfMonom.sort(comperatorTemp);
 	}
 
+	/**
+	 * This function substract(minus) polynom from existing polynom
+	 * The substract function use the add function by sending the monom with minus one (-1) before
+	 * @param p1: the polynom that need to be substracted
+	 * @throws _Exception
+	 */
 	@Override
 	public void substract(Polynom_able p1) throws _Exception 
 	{
@@ -106,21 +134,29 @@ public class Polynom implements Polynom_able
 		while(iter.hasNext())
 		{
 			Monom temp= iter.next();
-			temp.set_coefficient(-1*temp.get_coefficient());
-			this.add(temp);
+			this.add(new Monom(-1*temp.get_coefficient(),temp.get_power()));
+			RemoveSamePower(this);
+			//temp.set_coefficient(-1*temp.get_coefficient());
+			//this.add(temp);
 		}
+		this.removeZZeroMonoms();
 		this.listOfMonom.sort(comperatorTemp);
-		
-		
 	}
 
+	/**
+	 * This function multiply existing polynom with a new polyonm. 
+	 * run over each monom in the new and the existing polynoms and calculate the new monom.
+	 * insert the new calculated monon to a new polynom
+	 * send the polynom to a remove function to union same power monoms(if those were created during multiply)  
+	 * @param
+	 * @throws _Exception
+	 */
 	@Override
 	public void multiply(Polynom_able p1) throws _Exception 
 	{
 		Polynom tempPolynom= new Polynom();
 		Iterator<Monom> p1Iter=p1.iteretor();
 		Iterator<Monom> thisIter=iteretor();
-		Monom_Comperator comperatorTemp=new Monom_Comperator();
 		while(p1Iter.hasNext())
 		{
 			Monom p1Temp= p1Iter.next();
@@ -131,27 +167,17 @@ public class Polynom implements Polynom_able
 				tempPolynom.add(new Monom(p1Temp.get_coefficient()*tempThis.get_coefficient(),p1Temp.get_power()+tempThis.get_power()));
 			}
 		}
-		
-		Iterator<Monom> tempPolynomIter=tempPolynom.iteretor();
-		tempPolynom.listOfMonom.sort(comperatorTemp);
-		while(tempPolynomIter.hasNext())
-		{
-			Monom tempIter1= tempPolynomIter.next();
-			Monom tempIter2= tempPolynomIter.next();
-			if(comperatorTemp.compare(tempIter1,tempIter2)==0)
-			{
-				tempPolynom.add(new Monom(tempIter1.get_coefficient()+tempIter2.get_coefficient(),tempIter1.get_power()));
-				tempPolynom.listOfMonom.remove(tempIter1);
-				tempPolynom.listOfMonom.remove(tempIter2);
-			}
-		}
-		
+		RemoveSamePower(tempPolynom);
+		this.removeZZeroMonoms();
 		this.listOfMonom=tempPolynom.listOfMonom;
-		this.listOfMonom.sort(comperatorTemp);
-		
-		
 	}
 
+	/**
+	 * This function is a boolean function that compare two polynoms. 
+	 * Use comperator.
+	 * @param p1 represent the polynom that we want to compare with the existing polynom.
+	 * @return true if both polynoms are equal otherwise false.
+	 */
 	@Override
 	public boolean equals(Polynom_able p1) 
 	{
@@ -174,6 +200,11 @@ public class Polynom implements Polynom_able
 		return true;
 	}
 
+	/**
+	 * this function is a boolean function that check every monom in the polynom and
+	 *  return true if all the monoms are zero monoms. 
+	 * @return true if it is the zero polynom otherwise false.
+	 */
 	@Override
 	public boolean isZero() 
 	{
@@ -189,37 +220,131 @@ public class Polynom implements Polynom_able
 		return true;
 	}
 
+	/**
+	 * Compute a Riman's integral from x0 to x1 in eps steps. 
+	 * @param x0  represent a starting point
+	 * @param x1  represent a end point
+	 * @param eps represent the step (positive) value
+	 * @return the approximated area above X-axis below this function bounded in the range of [x0,x1]
+	 */
 	@Override
 	public double root(double x0, double x1, double eps) 
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		double midPoint=(x0+x1)/2;
+		boolean flagRecursivType=false;
+		if(this.f(x0)*this.f(x1)>0)
+		{
+			throw new RuntimeException("Both x0 and x1 are positive/negative");
+		}
+		if(this.f(x0)==0 || this.f(x1)==0)
+		{
+			if(this.f(x0)==0)
+			{
+				return x0;
+			}
+			return x1;
+		}
+		else if(Math.abs(x1-x0)<eps)
+		{
+			return ((x1+x0)/2);
+		}
+		if(this.f(x0)*this.f(midPoint)<0)
+		{
+			flagRecursivType=true;
+		}
+		if(flagRecursivType)
+		{
+			return root(x0,midPoint,eps);
+		}
+		else
+		{
+			return root(midPoint,x1,eps);
+		}
+		
 	}
 
+	/**
+	 * This function create a deep copy of current Polynom.
+	 * No parameters
+	 * @return new copied Polynom
+	 * throws _Exception 
+	 */
 	@Override
-	public Polynom_able copy() {
-		// TODO Auto-generated method stub
-		return null;
+	public Polynom_able copy() throws _Exception 
+	{
+		Iterator<Monom> iter=iteretor();
+		Polynom_able  newPolynom= new Polynom();
+		while(iter.hasNext())
+		{
+			Monom iterTemp=iter.next();
+			newPolynom.add(new Monom(iterTemp.get_coefficient(),iterTemp.get_power()));
+		}
+		return newPolynom;
 	}
 
+	
+	/**
+	 * Compute a new Polynom which is the derivative(Nigzeret) of this Polynom
+	 * @return newPolynom
+	 * @throws _Exception 
+	 */
 	@Override
-	public Polynom_able derivative() {
-		// TODO Auto-generated method stub
-		return null;
+	public Polynom_able derivative() throws _Exception 
+	{
+		Iterator<Monom> iter=iteretor();
+		Monom_Comperator comperatorTemp=new Monom_Comperator();
+		Polynom_able  newPolynom= new Polynom();
+		while(iter.hasNext())
+		{
+			Monom iterTemp=iter.next();
+			newPolynom.add(new Monom(iterTemp.derivative()));
+		}
+		return newPolynom;
 	}
 
+	
+	/**
+	 * Compute a value x' (x0<=x'<=x1) for with |f(x')| < eps
+	 * assuming (f(x0)*f(x1)<=0, else should throws runtimeException 
+	 * computes f(x') such that:
+	 * 	(i) x0<=x'<=x1 && 
+	 * 	(ii) |f(x')|<eps
+	 * @param x0 starting point
+	 * @param x1 end point
+	 * @param eps>0 (positive) representing the epsilon range the solution should be within.
+	 * @return an approximated value (root) for this (cont.) function 
+	 */
 	@Override
 	public double area(double x0, double x1, double eps) 
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		double areaSum= 0;
+		int numOfSteps=(int)Math.abs((x1-x0)/eps);
+		for(int i=0;i<numOfSteps;i++)
+		{
+			if(this.f(x0)>0)
+			{
+				areaSum=areaSum+(eps*this.f(x0));
+			}
+			x0=x0+eps;
+		}
+		return areaSum;
 	}
 
+	/**
+	 * @return an Iterator (of Monoms) over this Polynom
+	 * @return iterator
+	 */
 	@Override
-	public Iterator<Monom> iteretor() 
+	public Iterator<Monom> iteretor()
 	{
 		return this.listOfMonom.iterator();
 	}
+	
+	/**
+	 * Multiply this Polynom by p1
+	 * @param p1
+	 * @throws _Exception 
+	 */
 	@Override
 	public void multiply(Monom m1) throws _Exception
 	{
@@ -232,12 +357,12 @@ public class Polynom implements Polynom_able
 		}
 		
 	}
-	public static Polynom_able parse(String s1) 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
+	/**
+	 * This function check if the polynom contains only valid characters
+	 * @param str
+	 * @throws _Exception if not
+	 */
 	private static void isPolynomStringValid(String str) throws _Exception  
 	{ 
 	    if (str == null || str.equals("")) 
@@ -253,6 +378,85 @@ public class Polynom implements Polynom_able
 	        } 
 	    } 
 	} 
-
 	
+	/**
+	 * This function get a polynom and in case there are duplicate powers, union the monoms.
+	 * used in multiply function
+	 * @param tempPolynom
+	 * @throws _Exception
+	 */
+	private void RemoveSamePower(Polynom tempPolynom) throws _Exception 
+	{
+		
+	for(int i=0;i<tempPolynom.listOfMonom.size();)
+	{
+		Monom_Comperator comperatorTemp=new Monom_Comperator();
+		if(i==tempPolynom.listOfMonom.size()-1)
+		{
+			return;
+		}
+		if(comperatorTemp.compare(tempPolynom.listOfMonom.get(i),tempPolynom.listOfMonom.get(i+1))==0)
+		{
+			tempPolynom.listOfMonom.get(i).set_coefficient(tempPolynom.listOfMonom.get(i).get_coefficient()+tempPolynom.listOfMonom.get(i+1).get_coefficient());
+			tempPolynom.listOfMonom.remove(i+1);
+			tempPolynom.listOfMonom.sort(comperatorTemp);	
+		}
+		else
+		{
+			i++;
+		}
+		
+	}
+}
+	
+	/**
+	 * This function remove the zero monom that were added using the default constructor
+	 */
+	private void removeZZeroMonoms() 
+	{
+		Monom_Comperator comperatorTemp=new Monom_Comperator();
+		Iterator<Monom> iter = iteretor();
+		while (iter.hasNext())
+		{
+			Monom runner = iter.next();
+			if (runner.get_coefficient() == 0)
+				iter.remove();
+		}	
+		this.listOfMonom.sort(comperatorTemp);
+	}
+	
+	/**
+	 * This function calculate the string of the polynom
+	 * move over all the monoms and concatenated them to string
+	 * @return new string
+	 */
+	@Override
+	public String toString() 
+	{
+		String returnedString = "";
+		Iterator<Monom> monomIter= this.listOfMonom.iterator();
+		if(listOfMonom.size()==1) 
+		{
+			returnedString =returnedString+monomIter.next().toString();
+			return returnedString;
+		}
+		while(monomIter.hasNext()) 
+		{
+			Monom temp=monomIter.next();
+			if(returnedString.isEmpty())
+			{
+				returnedString=returnedString + temp.toString();
+			}
+			else if(temp.get_coefficient()<0)
+			{
+				returnedString=returnedString + temp.toString();
+			}
+			else
+			{
+				returnedString=returnedString + "+" + temp.toString();
+			}
+			
+		}
+		return returnedString;
+	}
 }
