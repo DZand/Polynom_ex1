@@ -79,16 +79,19 @@ public interface Polynom_able extends cont_function{
 	/**
 	 * create a deep copy of this Polynom
 	 * @return 
+	 * @throws _Exception 
 	 */
-	public Polynom_able copy();
+	public Polynom_able copy() throws _Exception;
 	/**
 	 * Compute a new Polynom which is the derivative of this Polynom
 	 * @return
+	 * @throws _Exception 
 	 */
-	public Polynom_able derivative();
+	public Polynom_able derivative() throws _Exception;
 	/**
 	 * @return an Iterator (of Monoms) over this Polynom
 	 * @return
 	 */
+	
 	public Iterator<Monom> iteretor();
 }
