@@ -67,7 +67,7 @@ public class Monom implements function
 	// ***************** add your code below **********************
 
 	/**
-	 * This constructor gets the shape a*x^b and take the coefficient and the power of the Monom.
+	 * This constructor gets the shape ax^b and take the coefficient and the power of the Monom.
 	 * @param s String.
 	 * @throws _Exception for a wrong Monom.
 	 */
@@ -163,15 +163,19 @@ public class Monom implements function
 		this._power=this._power+d._power;
 	}
 	
+	/**
+	 * This function calculate the string of the monom
+	 * Concate the coefficient and the power with the monom syntax ax^b
+	 * @return new string
+	 */
+	@Override
 	public String toString() 
 	{
-		String ans = this._coefficient + "*x^" + this._power;
+		String ans = this._coefficient + "x^" + this._power;
 		return ans;
 	}
-	// you may (always) add other methods.
 
-	//****************** Private Methods and Data *****************
-	
+
 	/**
 	 * This function check if 2 Monoms are equal.
 	 * @param m Monom.
@@ -182,13 +186,20 @@ public class Monom implements function
 		return this.get_coefficient() == m.get_coefficient() && this.get_power() == m.get_power();
 	}
 	
-	private double _coefficient; 
-	private int _power;
+	/**
+	 * this function set the coefficient
+	 * @param a
+	 */
 	public void set_coefficient(double a)
 	{
 		this._coefficient = a;
 	}
-	private void set_power(int p) 
+	
+	/**
+	 * this function set the power
+	 * @param p
+	 */
+	public void set_power(int p) 
 	{
 		if(p<0) 
 		{
@@ -196,6 +207,16 @@ public class Monom implements function
 		}
 		this._power = p;
 	}
+	
+	//****************** Private Methods and Data *****************
+	
+	private double _coefficient; 
+	private int _power;
+	
+	/**
+	 * This function is not on used
+	 * @return
+	 */
 	private static Monom getNewZeroMonom() 
 	{
 		return new Monom(ZERO);
