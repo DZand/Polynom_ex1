@@ -74,6 +74,7 @@ public class Monom implements function
 	
 	public Monom(String s) throws _Exception  
 	{
+				isMonomStringValid(s);
 				if(s.isEmpty())
 				{
 					throw new _Exception("Empty string");
@@ -221,6 +222,22 @@ public class Monom implements function
 	{
 		return new Monom(ZERO);
 	}
+	
+	private static void isMonomStringValid(String str) throws _Exception  
+	{ 
+	    if (str == null || str.equals("")) 
+	    { 
+	    	throw new _Exception("Empty Monom");
+	    } 
+	    for (int i = 0; i < str.length(); i++) 
+	    { 
+	        char ch = str.charAt(i); 
+	        if ((ch!='X') && (ch!='^') && !(ch >= '0' && ch <= '9') && ch!='-' && ch!='.')
+	        { 
+	        	throw new _Exception("Invalid Monom, illegal characters"); 
+	        } 
+	    } 
+	} 
 	
 	
 	
