@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class MonomTest 
 {
-	public static void main(String[] args) throws _Exception 
+	public static void main(String[] args) throws Exception 
 	{
 		/**
 		test1();
@@ -32,27 +32,7 @@ public class MonomTest
 		MultiplyTest();
 		AddTest();
 		*/
-		
-		Monom m = new Monom("2x^2");
-
-		Monom new_copy_one = new Monom(m);
-
-		Monom n = new Monom(2, 2);
-
-		System.out.println("This is the Monom m: " + m.toString());
-		System.out.println("This is the Monom new_copy_one: " + new_copy_one.toString());
-		System.out.println("This is the Monom n: " + n.toString());
-
-		n.add(m);
-		System.out.println(m + " + 2*x^2 (n)= " + n.toString());
-
-		Monom t = n.derivative();
-		System.out.println("The derivative of " + n + " is: " + t.toString());
-
-		System.out.println("ans for f(2): " + m.f(2)); // for f(double a) function
-
-		m.multipy(n);
-		System.out.println("2*x^2 * " + n + " = " + m.toString());
+		positiveTests();
 	}
 	
 	
@@ -170,5 +150,28 @@ public class MonomTest
 		}
 	}
 	
+	public static void positiveTests() throws Exception
+	{
+		Monom m = new Monom("2x^2");
+
+		Monom new_copy_one = new Monom(m);
+
+		Monom n = new Monom(2, 2);
+
+		System.out.println("This is the Monom m: " + m.toString());
+		System.out.println("This is the Monom new_copy_one: " + new_copy_one.toString());
+		System.out.println("This is the Monom n: " + n.toString());
+
+		n.add(m);
+		System.out.println(m + " + 2*x^2 (n)= " + n.toString());
+
+		Monom t = n.derivative();
+		System.out.println("The derivative of " + n + " is: " + t.toString());
+
+		System.out.println("ans for f(2): " + m.f(2)); // for f(double a) function
+
+		m.multipy(n);
+		System.out.println("2*x^2 * " + n + " = " + m.toString());
+	}
 	
 }
