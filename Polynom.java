@@ -31,9 +31,9 @@ public class Polynom implements Polynom_able
 	 * This is a constructor, that init a Polynom from a String such as:
 	 *  {"x", "3+1.4X^3-34x"} with no complex polynom
 	 * @param s: is a string represents a Polynom
-	 * @throws _Exception 
+	 * @throws Exception 
 	 */
-	public Polynom(String s) throws _Exception 
+	public Polynom(String s) throws Exception 
 	{
 		Monom_Comperator comperatorTemp=new Monom_Comperator();
 		s=s.toUpperCase();
@@ -363,18 +363,18 @@ public class Polynom implements Polynom_able
 	 * @param str
 	 * @throws _Exception if not
 	 */
-	private static void isPolynomStringValid(String str) throws _Exception  
+	private static void isPolynomStringValid(String str) throws Exception   
 	{ 
 	    if (str == null || str.equals("")) 
 	    { 
-	    	throw new _Exception("Invalid Polynom");
+	    	throw new _Exception("Empty Polynom");
 	    } 
 	    for (int i = 0; i < str.length(); i++) 
 	    { 
 	        char ch = str.charAt(i); 
 	        if ((ch!='X') && (ch!='^') && !(ch >= '0' && ch <= '9') && ch!='+' && ch!='-' && ch!='.')
 	        { 
-	        	throw new _Exception("Invalid Polynom"); 
+	        	throw new Exception("Invalid Polynom, illegal characters"); 
 	        } 
 	    } 
 	} 
