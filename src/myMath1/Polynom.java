@@ -137,7 +137,7 @@ public class Polynom implements Polynom_able
 			RemoveSamePower(this);
 		}
 		//This if check is relevant for removing different polynoms with same values 
-		//Check commit
+		//tehila commit
 		if(this.listOfMonom.isEmpty())
 		{
 			this.listOfMonom.add(new Monom(0,0));
