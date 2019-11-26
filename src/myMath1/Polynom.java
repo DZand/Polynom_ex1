@@ -124,7 +124,7 @@ public class Polynom implements Polynom_able
 		{
 			Monom temp= iter.next();
 			this.add(new Monom(-1*temp.get_coefficient(),temp.get_power()));
-			//This is for scenario of substract the polynom from itself
+			//This is for scenario of substract the polynom from itself.
 			if(((Polynom)p1).listOfMonom.isEmpty() )
 			{
 				if(this.listOfMonom.isEmpty())
