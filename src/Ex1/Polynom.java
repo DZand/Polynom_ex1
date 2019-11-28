@@ -272,7 +272,7 @@ public class Polynom implements Polynom_able
 	public Polynom_able copy() 
 	{
 		Iterator<Monom> iter=iteretor();
-		Polynom_able  newPolynom= new Polynom();
+		Polynom_able newPolynom= new Polynom();
 		while(iter.hasNext())
 		{
 			Monom iterTemp=iter.next();
@@ -453,8 +453,9 @@ public class Polynom implements Polynom_able
 		return returnedString;
 	}
 	@Override
-	public function initFromString(String s) {
-		// TODO Auto-generated method stub
-		return null;
+	public function initFromString(String s) 
+	{
+		function p = new Polynom(s);
+		return p;
 	}
 }

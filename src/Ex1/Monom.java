@@ -178,9 +178,10 @@ public class Monom implements function
 	 * @param m Monom.
 	 * @return true/false.
 	 */
-	public boolean equals(Monom m)
+	@Override
+	public boolean equals(Object obj)
 	{
-		return this.get_coefficient() == m.get_coefficient() && this.get_power() == m.get_power();
+		return this.get_coefficient() == ((Monom)obj).get_coefficient() && this.get_power() == ((Monom)obj).get_power();
 	}
 	
 	/**
@@ -242,14 +243,17 @@ public class Monom implements function
 	    } 
 	}
 	@Override
-	public function initFromString(String s) {
-		// TODO Auto-generated method stub
-		return null;
+	public function initFromString(String s) 
+	{
+		function m = new Monom(s);
+		return m;
 	}
 	@Override
-	public function copy() {
+	public function copy() 
+	{
 		// TODO Auto-generated method stub
-		return null;
+		function copyMonom = new Monom(this.get_coefficient(),this.get_power());
+		return copyMonom;
 	} 
 	
 	
