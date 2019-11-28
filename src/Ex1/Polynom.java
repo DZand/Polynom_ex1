@@ -180,9 +180,9 @@ public class Polynom implements Polynom_able
 	 * @return true if both polynoms are equal otherwise false.
 	 */
 	@Override
-	public boolean equals(Polynom_able p1) 
+	public boolean equals(Object p1) 
 	{
-		Iterator<Monom> iter1=p1.iteretor();
+		Iterator<Monom> iter1=((Polynom_able)p1).iteretor();
 		Iterator<Monom> iter2=iteretor();
 		boolean flag=true;
 		while(iter1.hasNext() && iter2.hasNext())
@@ -269,7 +269,7 @@ public class Polynom implements Polynom_able
 	 * @throws _Exception 
 	 */
 	@Override
-	public Polynom_able copy() throws Exception 
+	public Polynom_able copy() 
 	{
 		Iterator<Monom> iter=iteretor();
 		Polynom_able  newPolynom= new Polynom();
@@ -285,10 +285,9 @@ public class Polynom implements Polynom_able
 	/**
 	 * Compute a new Polynom which is the derivative(Nigzeret) of this Polynom
 	 * @return newPolynom
-	 * @throws Exception 
 	 */
 	@Override
-	public Polynom_able derivative() throws Exception 
+	public Polynom_able derivative() 
 	{
 		Iterator<Monom> iter=iteretor();
 		Polynom_able  newPolynom= new Polynom();
@@ -452,5 +451,10 @@ public class Polynom implements Polynom_able
 			
 		}
 		return returnedString;
+	}
+	@Override
+	public function initFromString(String s) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
