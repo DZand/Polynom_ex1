@@ -16,49 +16,32 @@ public class ComplexFunction implements complex_function
 	@Override
 	public double f(double x) 
 	{
-		double sum=0;
-		if(this.right==null && !(this.left instanceof ComplexFunction))
+		if(this instanceof ComplexFunction)
 		{
-			return this.left.f(x);
-		}
-		while (this.right !=null || (this.right==null && this.left instanceof ComplexFunction))
-		{
-			if(this.left instanceof ComplexFunction)
+			switch (this.op)
 			{
+			case Plus:
+				return this.left().f(x)+this.right().f(x);
+			case Times:
+				return this.left().f(x)*this.right().f(x);
+			case Divid:
+				return this.left().f(x)/this.right().f(x);
+			case Max:
+				return Math.max(this.left().f(x),this.right().f(x));
+			case Min:
+				return Math.min(this.left().f(x),this.right().f(x));
+			case Comp:
+				return this.left().f(this.right().f(x));
+			case None:
+				//ask yael
 				return this.left.f(x);
-			}
-			else
-			{
-				if(this.right instanceof ComplexFunction)
-				{
-					return this.right.f(x);
-				}
-				else
-				{
-					switch (this.op)
-					{
-					case Plus:
-						sum= sum+this.left.f(x)+this.right.f(x);
-					case Times:
-						sum= sum+this.left.f(x)*this.right.f(x);
-					case Divid:
-						sum= sum+this.left.f(x)/this.right.f(x);
-					case Max:
-						sum=sum+Math.max(this.left.f(x), this.right.f(x));
-					case Min:
-						sum=sum+Math.min(this.left.f(x), this.right.f(x));
-					//case Comp:
-					case None:
-						sum=sum+this.left.f(x);
-					default:
-						break;	
-					}
-				}
+			default:
+				return 0;
 			}
 		}
-		return sum;
+		return 0;
 	}
-
+			
 	@Override
 	public function initFromString(String s) 
 	{
