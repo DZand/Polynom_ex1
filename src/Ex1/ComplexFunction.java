@@ -65,22 +65,69 @@ public class ComplexFunction implements complex_function
 		function ans = null;
 		s = s.toLowerCase();
 		int firstOpen = s.indexOf('(');
-		String st= null;
+		String st=null;
+		int countComa = 0;
+		int countBrace =0;
+		for (int i =0; i<s.length()-1;i++)
+		{
+			if(s.indexOf(i)==',') 
+			{
+				countComa ++;
+			}
+		}
 		String operationTemp=s.substring(0,firstOpen-1);
-		 for (Operation c : Operation.values()) 
+		for (Operation c : Operation.values()) 
 		 {
 		        if (c.name().equals(operationTemp)) 
 		        {
 		            st=c.name();
 		        }
 		 }
-		 int start=s.indexOf(st);
-
+		int start=s.indexOf(st);
 		if(start>=0 && s.endsWith(")")) 
 		{
 			String s1= s.substring(start+st.length(),s.length()-1);
+			for(int i = 0; i<s1.length();i++) 
+			{
+				if(s1.charAt(i)=='(') 
+				{
+					countBrace++;
+				}
+				else if(s1.charAt(i)==')') 
+				countBrace--;
+				if (countBrace==0) 
+				{
+					break;
+				}
+				if(countBrace==1) 
+				{
+					function leftFun=initFromString(s1.substring(1, i-1));
+					function rightFun=initFromString((s1.substring(i+1,s1.length()-2)));
+					return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
+				}
+			}
 			function ff=initFromString(s1);
+			switch (Operation.valueOf(st))
+			{
+			case Plus:
+				plus(ff);
+			case Times:
+				mul(ff);
+			case Divid:
+				div(ff);
+			case Max:
+				max(ff);
+			case Min:
+				min(ff);
+			case Comp:
+				comp(ff);
+			case None:
+				//toCheck
+				break;
+			default:
+				break;
 			//ans=new ComplexFunction();
+			}
 		}
 		else
 		{
