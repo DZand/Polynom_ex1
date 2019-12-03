@@ -16,13 +16,80 @@ public class ComplexFunction implements complex_function
 	@Override
 	public double f(double x) 
 	{
-		return 0;
+		double sum=0;
+		if(this.right==null && !(this.left instanceof ComplexFunction))
+		{
+			return this.left.f(x);
+		}
+		while (this.right !=null || (this.right==null && this.left instanceof ComplexFunction))
+		{
+			if(this.left instanceof ComplexFunction)
+			{
+				return this.left.f(x);
+			}
+			else
+			{
+				if(this.right instanceof ComplexFunction)
+				{
+					return this.right.f(x);
+				}
+				else
+				{
+					switch (this.op)
+					{
+					case Plus:
+						sum= sum+this.left.f(x)+this.right.f(x);
+					case Times:
+						sum= sum+this.left.f(x)*this.right.f(x);
+					case Divid:
+						sum= sum+this.left.f(x)/this.right.f(x);
+					case Max:
+						sum=sum+Math.max(this.left.f(x), this.right.f(x));
+					case Min:
+						sum=sum+Math.min(this.left.f(x), this.right.f(x));
+					//case Comp:
+					case None:
+						sum=sum+this.left.f(x);
+					default:
+						break;	
+					}
+				}
+			}
+		}
+		return sum;
 	}
 
 	@Override
 	public function initFromString(String s) 
 	{
-		return null;
+		function ans = null;
+		s = s.toLowerCase();
+		int firstOpen = s.indexOf('(');
+		String st= null;
+		String operationTemp=s.substring(0,firstOpen-1);
+		 for (Operation c : Operation.values()) 
+		 {
+		        if (c.name().equals(operationTemp)) 
+		        {
+		            st=c.name();
+		        }
+		 }
+		 int start=s.indexOf(st);
+
+		if(start>=0 && s.endsWith(")")) 
+		{
+			String s1= s.substring(start+st.length(),s.length()-1);
+			function ff=initFromString(s1);
+			//ans=new ComplexFunction();
+		}
+		else
+		{
+			Polynom left=new Polynom(s.substring(1,s.indexOf(',')));
+			Polynom right=new Polynom(s.substring(s.indexOf(',')+1,s.length()-1));
+			ans=new ComplexFunction(left,right,Operation.valueOf(st));
+		}
+		return ans;
+
 	}
 
 	@Override
