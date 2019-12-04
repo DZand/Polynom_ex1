@@ -13,6 +13,57 @@ public class ComplexFunction implements complex_function
 		this.op = op2;
 	}
 
+	public ComplexFunction() 
+	{
+		this.left = null;
+		this.right = null;
+		this.op = Operation.None;
+	}
+
+	public ComplexFunction(Polynom p3) 
+	{
+		this.left = p3;
+		this.right = null;
+		this.op = Operation.None;
+	}
+
+	public ComplexFunction(String string, Polynom p1, Polynom p2) 
+	{
+		this.left = p1;
+		this.right = p2;
+		this.op = Operation.valueOf(string);
+	}
+
+	public ComplexFunction(String string, Polynom right2, ComplexFunction cf3) 
+	{
+		this.left = right2;
+		this.right = cf3;
+		this.op = Operation.valueOf(string);
+		
+	}
+
+	public ComplexFunction(function function) throws Exception 
+	{
+		if(function instanceof ComplexFunction)
+		{
+			this.left=((ComplexFunction) function).left();
+			this.right=((ComplexFunction) function).right();
+			this.op=((ComplexFunction) function).getOp();
+		}
+		else if(function instanceof Polynom)
+		{
+			/**
+			//ComplexFunction newPoly= new ComplexFunction(((Polynom) function));
+			this.left = (Polynom)function;
+			this.right = null;
+			this.op = Operation.None; 
+			Polynom newPoly= new Polynom(function);*/
+			throw new Exception("function is not complex function");
+		}
+	}
+
+	
+
 	@Override
 	public double f(double x) 
 	{
@@ -33,7 +84,6 @@ public class ComplexFunction implements complex_function
 			case Comp:
 				return this.left().f(this.right().f(x));
 			case None:
-				//ask yael
 				return this.left.f(x);
 			default:
 				return 0;
@@ -45,19 +95,26 @@ public class ComplexFunction implements complex_function
 	@Override
 	public function initFromString(String s) 
 	{
-		function ans = null;
 		s = s.toLowerCase();
+		//Polynom newPolynom= new Polynom(s);
+		
 		int firstOpen = s.indexOf('(');
-		String st=null;
-		int countComa = 0;
-		int countBrace =0;
-		for (int i =0; i<s.length()-1;i++)
+		if (firstOpen <0) 
 		{
-			if(s.indexOf(i)==',') 
+			try 
 			{
-				countComa ++;
+				Polynom newPoly = new Polynom(s);
+				return newPoly;
 			}
+		    catch(Exception c)
+			{
+				
+			}	
 		}
+		String st=null;
+		int start = -1;
+		int countBrace =0;
+		ComplexFunction temp = new ComplexFunction();
 		String operationTemp=s.substring(0,firstOpen-1);
 		for (Operation c : Operation.values()) 
 		 {
@@ -66,62 +123,70 @@ public class ComplexFunction implements complex_function
 		            st=c.name();
 		        }
 		 }
-		int start=s.indexOf(st);
+		if (st!=null) 
+		{
+			start=s.indexOf(st);
+		}
 		if(start>=0 && s.endsWith(")")) 
 		{
 			String s1= s.substring(start+st.length(),s.length()-1);
-			for(int i = 0; i<s1.length();i++) 
+			for(int i = 0; i<s1.length(); i++) 
 			{
 				if(s1.charAt(i)=='(') 
 				{
 					countBrace++;
 				}
 				else if(s1.charAt(i)==')') 
-				countBrace--;
+				{
+					countBrace--;
+				}
 				if (countBrace==0) 
 				{
 					break;
 				}
 				if(countBrace==1) 
 				{
-					function leftFun=initFromString(s1.substring(1, i-1));
-					function rightFun=initFromString((s1.substring(i+1,s1.length()-2)));
-					return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
+					function leftFun=temp.initFromString(s1.substring(1, i+1));
+					function rightFun=temp.initFromString((s1.substring(i+2,s1.length()-1)));
+					return ((ComplexFunction)leftFun).createComplex(st, rightFun);
+					//return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
 				}
 			}
-			function ff=initFromString(s1);
-			switch (Operation.valueOf(st))
-			{
-			case Plus:
-				plus(ff);
-			case Times:
-				mul(ff);
-			case Divid:
-				div(ff);
-			case Max:
-				max(ff);
-			case Min:
-				min(ff);
-			case Comp:
-				comp(ff);
-			case None:
-				//toCheck
-				break;
-			default:
-				break;
-			//ans=new ComplexFunction();
-			}
 		}
+		
 		else
 		{
-			Polynom left=new Polynom(s.substring(1,s.indexOf(',')));
-			Polynom right=new Polynom(s.substring(s.indexOf(',')+1,s.length()-1));
-			ans=new ComplexFunction(left,right,Operation.valueOf(st));
+			function leftPoly=new Polynom(s.substring(1,s.indexOf(',')));
+			function rightPoly=new Polynom(s.substring(s.indexOf(',')+1,s.length()-1));
+			return ((ComplexFunction)leftPoly).createComplex(st, rightPoly);
 		}
-		return ans;
-
+		return null;
 	}
-
+	
+	public function createComplex(String oper, function ff) 
+	{
+		switch (Operation.valueOf(oper))
+		{
+		case Plus:
+			plus(ff);
+		case Times:
+			mul(ff);
+		case Divid:
+			div(ff);
+		case Max:
+			max(ff);
+		case Min:
+			min(ff);
+		case Comp:
+			comp(ff);
+		case None:
+			//toCheck
+			break;
+		default:
+			break;
+	}
+		return this;
+	}
 	@Override
 	public function copy() 
 	{
@@ -204,6 +269,19 @@ public class ComplexFunction implements complex_function
 	{
 		return this.op;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return this.op.name() + '(' + this.left().toString() +',' + this.right().toString() +')';
+		
+	}
 
 
-}
+	public boolean equals(Object obj)
+	{
+		return false;
+		
+	}
+	}
+

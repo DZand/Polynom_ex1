@@ -1,112 +1,137 @@
 package Ex1;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class Functions_GUI implements functions{
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+public class Functions_GUI implements functions
+{
+	private ArrayList<function> listOfFunction;
+	
+	public Functions_GUI()
+	{
+		listOfFunction = new ArrayList<function>();
 	}
 
 	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
+	public int size() 
+	{
+		return listOfFunction.size();
+	}
+
+	@Override
+	public boolean isEmpty() 
+	{
+		return listOfFunction.isEmpty();
+	}
+
+	@Override
+	public boolean contains(Object o) 
+	{
+		return listOfFunction.contains(o);
+	}
+
+	@Override
+	public Iterator<function> iterator() 
+	{
+		return listOfFunction.iterator();
+	}
+
+	@Override
+	public Object[] toArray() 
+	{
+		return listOfFunction.toArray();
+	}
+
+	@Override
+	public <T> T[] toArray(T[] a) 
+	{
+		return listOfFunction.toArray(a);
+	}
+
+	@Override
+	public boolean add(function e) 
+	{
+		if (listOfFunction.add(e)) 
+		{
+			return true;
+		}
 		return false;
+}
+	@Override
+	public boolean remove(Object o) 
+	{
+		return listOfFunction.remove(o);
 	}
 
 	@Override
-	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsAll(Collection<?> c) 
+	{
+		return listOfFunction.containsAll(c);
 	}
 
 	@Override
-	public Iterator<function> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean addAll(Collection<? extends function> c) 
+	{	
+		return listOfFunction.addAll(c);
 	}
 
 	@Override
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean removeAll(Collection<?> c) 
+	{
+		return listOfFunction.removeAll(c);
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean retainAll(Collection<?> c) 
+	{
+		return listOfFunction.retainAll(c);
 	}
 
 	@Override
-	public boolean add(function e) {
-		// TODO Auto-generated method stub
-		return false;
+	public void clear() 
+	{
+		listOfFunction.clear();
 	}
 
 	@Override
-	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends function> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
+	public void initFromFile(String file) throws IOException 
+	{
 		
 	}
 
 	@Override
-	public void initFromFile(String file) throws IOException {
-		// TODO Auto-generated method stub
+	public void saveToFile(String file) throws IOException 
+	{
+		
 		
 	}
 
 	@Override
-	public void saveToFile(String file) throws IOException {
-		// TODO Auto-generated method stub
+	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) 
+	{
+		
 		
 	}
 
 	@Override
-	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) {
-		// TODO Auto-generated method stub
+	public void drawFunctions(String json_file) 
+	{
+		
 		
 	}
 
-	@Override
-	public void drawFunctions(String json_file) {
-		// TODO Auto-generated method stub
-		
+	public function get(int i)
+	{
+		return (function) listOfFunction.toArray()[i];
 	}
+
+	/**public Polynom get(int i) 
+	{
+		
+		return (Polynom)listOfFunction.toArray()[i];
+	}*/
 	
 
 }
