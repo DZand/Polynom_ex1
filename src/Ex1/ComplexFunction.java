@@ -280,7 +280,15 @@ public class ComplexFunction implements complex_function
 
 	public boolean equals(Object obj)
 	{
-		return false;
+		boolean equal=true;
+		while(equal)
+		{
+			if(!this.left().equals(this.right()))
+			{
+				equal=false;
+			}
+		}
+		return equal;
 		
 	}
 	}
