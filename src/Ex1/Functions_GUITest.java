@@ -16,8 +16,10 @@ import org.junit.jupiter.api.Test;
  * @author boaz_benmoshe
  *
  */
-class Functions_GUITest {
-	public static void main(String[] a) throws Exception {
+class Functions_GUITest 
+{
+	public static void main(String[] a) throws Exception 
+	{
 		Functions_GUI data = FunctionsFactory();
 		int w=1000, h=600, res=200;
 		Range rx = new Range(-10,10);
@@ -26,7 +28,8 @@ class Functions_GUITest {
 	}
 	private Functions_GUI _data=null;
 //	@BeforeAll
-//	static void setUpBeforeClass() throws Exception {
+//	static void setUpBeforeClass() throws Exception 
+	//{
 //	}
 
 	@BeforeEach
@@ -94,7 +97,6 @@ class Functions_GUITest {
 		ans.add(cf6.copy());
 		ComplexFunction max = new ComplexFunction(ans.get(0).copy());
 		ComplexFunction min = new ComplexFunction(ans.get(0).copy());
-		//work
 		for(int i=1;i<ans.size();i++) 
 		{
 			max.max(ans.get(i));
