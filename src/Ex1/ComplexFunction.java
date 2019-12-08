@@ -277,7 +277,7 @@ public class ComplexFunction implements complex_function
 		
 	}
 
-
+	@Override
 	public boolean equals(Object obj)
 	{
 		return false;
