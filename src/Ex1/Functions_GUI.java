@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.awt.Font;
 
 
 //import com.google.gson.JsonArray;
@@ -165,10 +166,45 @@ public class Functions_GUI implements functions
 	@Override
 	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) 
 	{
-		StdDraw.setCanvasSize(width,height);
 		StdDraw.clear(StdDraw.WHITE);
-		StdDraw.line(10, 0, 10, 0);
-		StdDraw.line(0, -13, 0, 13);
+		StdDraw.setXscale(rx.get_min(),rx.get_min());
+		StdDraw.setYscale(ry.get_min(), ry.get_max());
+		////////vertical lines
+		StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+		for (int i =(int)rx.get_min(); i <= rx.get_max(); i=i+10) 
+		{
+			StdDraw.line(i, ry.get_min(), i, ry.get_max());
+		}
+		//////// horizontal  lines
+		for (double i = ry.get_min(); i <= ry.get_max(); i=i+0.5) 
+		{
+			StdDraw.line(rx.get_min(), i, rx.get_max(), i);
+		//////// x axis
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.setPenRadius(0.005);
+		StdDraw.line(rx.get_min(), 0, ry.get_max(), 0);
+		StdDraw.setFont(new Font("TimesRoman", Font.BOLD, 15));
+		for (int j = (int)rx.get_min(); i <= rx.get_max(); i++) 
+		{
+			StdDraw.text(j, -0.07, Integer.toString(j));
+		}
+		//////// y axis
+		StdDraw.line(0, ry.get_min(), 0, ry.get_max());
+		for (double k = ry.get_min(); i <= ry.get_max(); k=k+0.5) 
+		{
+			StdDraw.text(-0.07, k, Double.toString(k));
+		}
+		//until here
+/**
+			// plot the approximation to the function
+			for (int i = 0; i < n; i++) {
+				StdDraw.line(x[i], y[i], x[i+1], y[i+1]);
+			}
+			StdDraw.setPenColor(Color.RED);
+			StdDraw.setPenRadius(0.01);
+			StdDraw.point(x[n/2], 1);
+		}
+		}
 		while (this.iterator().hasNext()) 
 		{
 			function currentFun = this.iterator().next();
@@ -176,9 +212,10 @@ public class Functions_GUI implements functions
 			{
 				StdDraw.line(i, currentFun.f(i), i++, currentFun.f(i++));
 			}
+			*/
 		}
 	}
-/**
+
 	@Override
 	public void drawFunctions(String json_file) 
 	{
@@ -198,7 +235,7 @@ public class Functions_GUI implements functions
 			e.printStackTrace();
 		}
 		drawFunctions(widthJson,heightJson,rxJson,ryJson,resolutionJson);
-	}*/
+	}
 
 	public function get(int i)
 	{
