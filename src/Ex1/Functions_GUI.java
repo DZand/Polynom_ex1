@@ -11,9 +11,9 @@ import java.util.Collection;
 import java.util.Iterator;
 
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+//import com.google.gson.JsonArray;
+//import com.google.gson.JsonObject;
+//import com.google.gson.JsonParser;
 
 
 
@@ -160,16 +160,25 @@ public class Functions_GUI implements functions
 			e.printStackTrace();
 			return;
 		}
-		
 	}
 
 	@Override
 	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) 
 	{
-		
-		
+		StdDraw.setCanvasSize(width,height);
+		StdDraw.clear(StdDraw.WHITE);
+		StdDraw.line(10, 0, 10, 0);
+		StdDraw.line(0, -13, 0, 13);
+		while (this.iterator().hasNext()) 
+		{
+			function currentFun = this.iterator().next();
+			for (int i=-10;i<9;i++) 
+			{
+				StdDraw.line(i, currentFun.f(i), i++, currentFun.f(i++));
+			}
+		}
 	}
-
+/**
 	@Override
 	public void drawFunctions(String json_file) 
 	{
@@ -188,8 +197,8 @@ public class Functions_GUI implements functions
 		{
 			e.printStackTrace();
 		}
-		
-	}
+		drawFunctions(widthJson,heightJson,rxJson,ryJson,resolutionJson);
+	}*/
 
 	public function get(int i)
 	{

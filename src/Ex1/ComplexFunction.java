@@ -280,16 +280,24 @@ public class ComplexFunction implements complex_function
 	@Override
 	public boolean equals(Object obj)
 	{
-		boolean equal=true;
-		while(equal)
+		for (int i=0;i<100;i++) 
 		{
-			if(!this.left().equals(this.right()))
+			double j = Math.random()*100;
+			if(obj instanceof ComplexFunction) 
 			{
-				equal=false;
+				if(!(this.f(j)==((ComplexFunction)obj).f(j))) 
+				{
+					return false;
+				}
+			}else 
+			{
+				if(!(this.f(j)==((Polynom)obj).f(j))) 
+				{
+					return false;
+				}
 			}
 		}
-		return equal;
-		
+		return true;
 	}
-	}
+}
 
