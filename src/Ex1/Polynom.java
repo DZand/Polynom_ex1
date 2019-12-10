@@ -42,6 +42,10 @@ public class Polynom implements Polynom_able
 		String [] splitPolynom =s.split ("\\+");
 		for(int i=0;i<splitPolynom.length;i++)
 		{
+			if(splitPolynom[i].isEmpty() && i==0)
+			{
+				i=1;
+			}
 			this.add(new Monom(splitPolynom[i]));
 		}
 		this.listOfMonom.sort(_PolynomComp);
@@ -123,7 +127,12 @@ public class Polynom implements Polynom_able
 		while(iter.hasNext())
 		{
 			Monom temp= iter.next();
+			int polyonmLength=this.listOfMonom.size();
 			this.add(new Monom(-1*temp.get_coefficient(),temp.get_power()));
+			if(polyonmLength>this.listOfMonom.size())
+			{
+				iter=p1.iteretor();
+			}
 			//This is for scenario of substract the polynom from itself.
 			if(((Polynom)p1).listOfMonom.isEmpty() )
 			{
@@ -133,11 +142,10 @@ public class Polynom implements Polynom_able
 				}
 				return;
 			}
-			iter.remove();
+			//iter.remove();
 			RemoveSamePower(this);
 		}
 		//This if check is relevant for removing different polynoms with same values 
-		//tehila commit
 		if(this.listOfMonom.isEmpty())
 		{
 			this.listOfMonom.add(new Monom(0,0));
@@ -187,8 +195,9 @@ public class Polynom implements Polynom_able
 		boolean flag=true;
 		while(iter1.hasNext() && iter2.hasNext())
 		{
-			if(!iter1.next().equals(iter2.next()))
+			if(!iter1.next().equals(iter2.next()) && (Math.abs(iter1.next().get_coefficient()-iter2.next().get_coefficient()))!=0.00000001)
 			{
+				//double temp1=Math.abs(iter1.next().get_coefficient()-iter2.next().get_coefficient());
 				flag=false;
 			}
 		}
