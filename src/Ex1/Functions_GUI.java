@@ -9,6 +9,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.awt.Font;
 
 
@@ -220,15 +225,18 @@ public class Functions_GUI implements functions
 	public void drawFunctions(String json_file) 
 	{
 		JsonParser p =new JsonParser();
+		int widthJson=0,heightJson=0,resolutionJson=0;
+		JsonArray rxJson,ryJson;
 		try 
 		{
 			FileReader fileReader = new FileReader(json_file);
 			JsonObject obj =(JsonObject)p.parse(fileReader);
-			int widthJson=(int)obj.get("Width").getAsInt();
-			int heightJson=(int)obj.get("Height").getAsInt();
-			int resolutionJson=(int)obj.get("Resolution").getAsInt();
-			JsonArray rxJson=(JsonArray)obj.get("Rx");
-			JsonArray ryJson=(JsonArray)obj.get("Ry");
+			widthJson=(int)obj.get("Width").getAsInt();
+			heightJson=(int)obj.get("Height").getAsInt();
+			resolutionJson=(int)obj.get("Resolution").getAsInt();
+			rxJson=(JsonArray)obj.get("Rx");
+			ryJson=(JsonArray)obj.get("Ry");
+			Range rx=rxJson.
 		} 
 		catch (FileNotFoundException e) 
 		{

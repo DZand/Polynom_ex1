@@ -65,7 +65,7 @@ public class ComplexFunction implements complex_function
 	
 
 	@Override
-	public double f(double x) 
+	public double f(double x) throws Exception 
 	{
 		if(this instanceof ComplexFunction)
 		{
@@ -76,7 +76,15 @@ public class ComplexFunction implements complex_function
 			case Times:
 				return this.left().f(x)*this.right().f(x);
 			case Divid:
-				return this.left().f(x)/this.right().f(x);
+				if(this.right().f(x)==0)
+				{
+					throw new Exception("Could not divid in zero");
+				}
+				else
+				{
+					return this.left().f(x)/this.right().f(x);
+				}
+				
 			case Max:
 				return Math.max(this.left().f(x),this.right().f(x));
 			case Min:
@@ -278,22 +286,35 @@ public class ComplexFunction implements complex_function
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object obj) 
 	{
 		for (int i=0;i<100;i++) 
 		{
 			double j = Math.random()*100;
 			if(obj instanceof ComplexFunction) 
 			{
-				if(!(this.f(j)==((ComplexFunction)obj).f(j))) 
+				try {
+					if(!(this.f(j)==((ComplexFunction)obj).f(j))) 
+					{
+						return false;
+					}
+				} 
+				catch (Exception e) 
 				{
-					return false;
+					e.printStackTrace();
 				}
-			}else 
+			}
+			else 
 			{
-				if(!(this.f(j)==((Polynom)obj).f(j))) 
+				try {
+					if(!(this.f(j)==((Polynom)obj).f(j))) 
+					{
+						return false;
+					}
+				} 
+				catch (Exception e) 
 				{
-					return false;
+					e.printStackTrace();
 				}
 			}
 		}
