@@ -190,7 +190,7 @@ public class Functions_GUI implements functions
 		}
 		//////// y axis
 		StdDraw.line(0, ry.get_min(), 0, ry.get_max());
-		for (double k = ry.get_min(); i <= ry.get_max(); k=k+0.5) 
+		for (double k = ry.get_min(); k <= ry.get_max(); k=k+0.5) 
 		{
 			StdDraw.text(-0.07, k, Double.toString(k));
 		}
