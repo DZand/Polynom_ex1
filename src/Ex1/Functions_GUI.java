@@ -20,78 +20,94 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class Functions_GUI implements functions {
+public class Functions_GUI implements functions 
+{
 	private ArrayList<function> listOfFunction;
 
-	public Functions_GUI() {
+	public Functions_GUI() 
+	{
 		listOfFunction = new ArrayList<function>();
 	}
 
 	@Override
-	public int size() {
+	public int size() 
+	{
 		return listOfFunction.size();
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public boolean isEmpty() 
+	{
 		return listOfFunction.isEmpty();
 	}
 
 	@Override
-	public boolean contains(Object o) {
+	public boolean contains(Object o) 
+	{
 		return listOfFunction.contains(o);
 	}
 
 	@Override
-	public Iterator<function> iterator() {
+	public Iterator<function> iterator() 
+	{
 		return listOfFunction.iterator();
 	}
 
 	@Override
-	public Object[] toArray() {
+	public Object[] toArray() 
+	{
 		return listOfFunction.toArray();
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
+	public <T> T[] toArray(T[] a) 
+	{
 		return listOfFunction.toArray(a);
 	}
 
 	@Override
-	public boolean add(function e) {
-		if (listOfFunction.add(e)) {
+	public boolean add(function e) 
+	{
+		if (listOfFunction.add(e)) 
+		{
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public boolean remove(Object o) {
+	public boolean remove(Object o) 
+	{
 		return listOfFunction.remove(o);
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
+	public boolean containsAll(Collection<?> c) 
+	{
 		return listOfFunction.containsAll(c);
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends function> c) {
+	public boolean addAll(Collection<? extends function> c) 
+	{
 		return listOfFunction.addAll(c);
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c) {
+	public boolean removeAll(Collection<?> c) 
+	{
 		return listOfFunction.removeAll(c);
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c) {
+	public boolean retainAll(Collection<?> c) 
+	{
 		return listOfFunction.retainAll(c);
 	}
 
 	@Override
-	public void clear() {
+	public void clear() 
+	{
 		listOfFunction.clear();
 	}
 
@@ -99,8 +115,6 @@ public class Functions_GUI implements functions {
 	public void initFromFile(String file) throws IOException 
 	{
 		String line = "";
-		//String fileSplitBy = ",";
-		//String[] splited = null;
 		function tempFunction = new ComplexFunction();
 
 		try {
@@ -109,12 +123,6 @@ public class Functions_GUI implements functions {
 			while ((line = br.readLine()) != null) 
 			{
 				listOfFunction.add(tempFunction.initFromString(line));
-				/**splited = line.split(fileSplitBy);
-				for (int i = 0; i < splited.length; i++) 
-				{
-					listOfFunction.add(tempFunction.initFromString(splited[i]));
-				}
-				*/
 			}
 			br.close();
 		} catch (IOException e) 
@@ -232,11 +240,11 @@ public class Functions_GUI implements functions {
 			}
 			if(!(obj.get("Range_X").isJsonNull()))
 			{
-				rxJson = (JsonArray) obj.get("Rx");
+				rxJson = (JsonArray) obj.get("Range_X");
 			}
 			if(!(obj.get("Range_Y").isJsonNull()))
 			{
-				ryJson = (JsonArray) obj.get("Ry");
+				ryJson = (JsonArray) obj.get("Range_Y");
 			}
 			
 			rangeX= new Range (rxJson.get(0).getAsDouble(),rxJson.get(1).getAsDouble());

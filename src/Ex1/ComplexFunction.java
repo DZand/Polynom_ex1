@@ -84,129 +84,75 @@ public class ComplexFunction implements complex_function {
 	@Override
 	public function initFromString(String s) 
 	{
-		//s = s.toLowerCase();
-		// Polynom newPolynom= new Polynom(s);
-		int firstOpen = s.indexOf('(');
-		int numComma = 0;
-		if (firstOpen==-1)
+		s=s.replaceAll(" ", "");
+		int Open = s.indexOf('(');
+		if (Open==-1)
 		{
-			try
-			{
-				Polynom newPoly = new Polynom(s);
+				function newPoly = new Polynom(s);
 				return newPoly;
-			} 
-			catch (Exception c)
-			{
-
-			}
 		}
-		else 
-		{
-		String st = null;
-		int start = -1;
+		String stringOperator = null;
 		int countBrace = 0;
-		int indexSplit = 0;
+		int indexSplit = -1;
 		ComplexFunction temp = new ComplexFunction();
-		String operationTemp = s.substring(0, firstOpen);
-		//System.out.println(operationTemp);
 		for (Operation c : Operation.values())
 		{
-			if (c.name().equals(operationTemp)) 
+			if (c.name().equals(s.substring(0, Open))) 
 			{
-				st = c.name();
+				stringOperator = c.name();
 				break;
 			}
 		}
-		
-		if (st != null) 
+
+		//count how many open brackets before the first close bracket
+		//System.out.println("s.length()" + s.length());
+	
+		for (int i=Open+1; i<s.length()-1; i++) 
 		{
-			start = s.indexOf(st);
-		}
-		String splitByOp=s.substring(st.length()+1,s.length()-1);
-		for (int i =0; i<splitByOp.length(); i++) 
-		{
-			
-			if (splitByOp.charAt(i)=='(') 
+			if (s.charAt(i)=='(') 
 			{
 				countBrace++;
 			}
-			/**if (splitByOp.charAt(i)==')') 
+			
+			if(s.charAt(i)==')')
 			{
-				countBrace;
-			}*/
-			if (splitByOp.charAt(i)==',') 
-			{
-				numComma++;
+				countBrace--;
 			}
-			if (splitByOp.charAt(i)==',' &&numComma==countBrace)
+			if(s.charAt(i) == ',' && countBrace == 0)
 			{
 				indexSplit = i;
+				break;
 			}
+			if(countBrace == 0 && s.lastIndexOf(')')==1)
+			{
+				indexSplit= s.indexOf(',');
+			}
+				
 		}
-		String s1  = splitByOp.substring(st.length()+1, indexSplit);
-		String s2 = splitByOp.substring(indexSplit+1,s.length()-1);
+		
+		if(Operation.valueOf(stringOperator)==Operation.None)
+		{
+			return new Polynom(s.substring(Open+1, s.length()-1));
+		}
+		
+		if(indexSplit==-1)
+		{
+			throw new RuntimeException("Invalid string - missing comma");
+		}
+
+		String s1 = s.substring(Open+1,indexSplit);
+		String s2  = s.substring(indexSplit+1, s.length()-1);
 		function leftFun = temp.initFromString(s1);
 		function rightFun = temp.initFromString(s2);
-		if (leftFun instanceof ComplexFunction ) 
-		{
-			return ((ComplexFunction) leftFun).createComplex(st, rightFun);
-		}
-		else 
-		{
-			return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
-		}
+		return new ComplexFunction(leftFun,rightFun,Operation.valueOf(stringOperator));
 		
 
-		
-		
-		/**
-		
-		if (start >= 0 && s.endsWith(")")) 
+}
+
+	public function createComplex(String oper, function ff)
+	{
+		switch (Operation.valueOf(oper)) 
 		{
-			String s1 = s.substring(start + st.length(), s.length());
-			for (int i = 0; i < s1.length(); i++) 
-			{
-				if (s1.charAt(i) == '(') 
-				{
-					countBrace++;
-				} else if (s1.charAt(i) == ')') {
-					countBrace--;
-				}
-				if (countBrace == 0) {
-					break;
-				}
-
-				if (countBrace == 1) 
-				{
-					int lastComma = s1.lastIndexOf(',');
-					System.out.println(s1.substring(1, lastComma));
-					function leftFun = temp.initFromString(s1.substring(1, lastComma));
-					function rightFun = temp.initFromString((s1.substring(lastComma+1, s1.length()- 1)));
-					if (leftFun instanceof ComplexFunction ) 
-					{
-						return ((ComplexFunction) leftFun).createComplex(st, rightFun);
-					}
-					else 
-					{
-						return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
-					}
-					// return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
-				}
-			}
-		}
-		else {
-			function leftPoly = new Polynom(s.substring(1, s.indexOf(',')));
-			function rightPoly = new Polynom(s.substring(s.indexOf(',') + 1, s.length() - 1));
-			return ((ComplexFunction) leftPoly).createComplex(st, rightPoly);
-		}
-		}*/
-	
-		}
-		return null;
-		}
-
-	public function createComplex(String oper, function ff) {
-		switch (Operation.valueOf(oper)) {
 		case Plus:
 			plus(ff);
 		case Times:

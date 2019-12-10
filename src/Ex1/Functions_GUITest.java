@@ -29,8 +29,10 @@ import Ex1.functions;
  * @author boaz_benmoshe
  *
  */
-class Functions_GUITest {
-	public static void main(String[] a) throws Exception {
+class Functions_GUITest 
+{
+	public static void main(String[] a) throws Exception 
+	{
 		functions data = FunctionsFactory();
 	//	int w=1000, h=600, res=200;
 	//	Range rx = new Range(-10,10);
@@ -43,8 +45,11 @@ class Functions_GUITest {
 			Functions_GUI data2 = new Functions_GUI();
 			data2.initFromFile(file);
 			data.saveToFile(file2);
+			}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
 		}
-		catch(Exception e) {e.printStackTrace();}
 		
 		String JSON_param_file = "GUI_params.txt";
 		data.drawFunctions(JSON_param_file);
@@ -55,38 +60,45 @@ class Functions_GUITest {
 //	}
 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() throws Exception 
+	{
 		_data = FunctionsFactory();
 	}
 
 	//@Test
-	void testFunctions_GUI() {
+	void testFunctions_GUI() 
+	{
 	//	fail("Not yet implemented");
 	}
 
 	//@Test
-	void testInitFromFile() {
+	void testInitFromFile() 
+	{
 	//	fail("Not yet implemented");
 	}
 
 	//@Test
-	void testSaveToFile() {
+	void testSaveToFile() 
+	{
 		
 		
 	}
 
 	//@Test
-	void testDrawFunctions() {
+	void testDrawFunctions() 
+	{
 		//_data.drawFunctions();
 	//	fail("Not yet implemented");
 	}
 
 	@Test
-	void testDrawFunctionsIntIntRangeRangeInt() {
+	void testDrawFunctionsIntIntRangeRangeInt() 
+	{
 		_data.drawFunctions("GUI_params.txt");
 		//fail("Not yet implemented");
 	}
-	public static functions FunctionsFactory() throws Exception {
+	public static functions FunctionsFactory() throws Exception 
+	{
 		functions ans = new Functions_GUI();
 		String s1 = "3.1+2.4x^2-x^4";
 		String s2 = "5+2x-3.3x+0.1x^5";
@@ -105,7 +117,6 @@ class Functions_GUITest {
 		
 		//ans.add(cf.copy());
 		ans.add(cf4.copy());
-		/**
 		cf.div(p1);
 		ans.add(cf.copy());
 		String s = cf.toString();
@@ -123,7 +134,7 @@ class Functions_GUITest {
 			min.min(f);
 		}
 		ans.add(max);
-		ans.add(min);	*/	
+		ans.add(min);		
 		return ans;
 	}
 }
