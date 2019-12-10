@@ -1,94 +1,75 @@
 package Ex1;
 
-public class ComplexFunction implements complex_function 
-{
+public class ComplexFunction implements complex_function {
 	function right;
 	function left;
 	Operation op;
-	
-	public ComplexFunction(function left2, function right2, Operation op2) 
-	{
+
+	public ComplexFunction(function left2, function right2, Operation op2) {
 		this.left = left2;
-		this.right= right2;
+		this.right = right2;
 		this.op = op2;
 	}
 
-	public ComplexFunction() 
-	{
+	public ComplexFunction() {
 		this.left = null;
 		this.right = null;
 		this.op = Operation.None;
 	}
 
-	public ComplexFunction(Polynom p3) 
-	{
+	public ComplexFunction(Polynom p3) {
 		this.left = p3;
 		this.right = null;
 		this.op = Operation.None;
 	}
 
-	public ComplexFunction(String string, Polynom p1, Polynom p2) 
-	{
+	public ComplexFunction(String string, Polynom p1, Polynom p2) {
 		this.left = p1;
 		this.right = p2;
 		this.op = Operation.valueOf(string);
 	}
 
-	public ComplexFunction(String string, Polynom right2, ComplexFunction cf3) 
-	{
+	public ComplexFunction(String string, Polynom right2, ComplexFunction cf3) {
 		this.left = right2;
 		this.right = cf3;
 		this.op = Operation.valueOf(string);
-		
+
 	}
 
-	public ComplexFunction(function function) throws Exception 
-	{
-		if(function instanceof ComplexFunction)
-		{
-			this.left=((ComplexFunction) function).left();
-			this.right=((ComplexFunction) function).right();
-			this.op=((ComplexFunction) function).getOp();
-		}
-		else if(function instanceof Polynom)
-		{
+	public ComplexFunction(function function) throws Exception {
+		if (function instanceof ComplexFunction) {
+			this.left = ((ComplexFunction) function).left();
+			this.right = ((ComplexFunction) function).right();
+			this.op = ((ComplexFunction) function).getOp();
+		} else if (function instanceof Polynom) {
 			/**
-			//ComplexFunction newPoly= new ComplexFunction(((Polynom) function));
-			this.left = (Polynom)function;
-			this.right = null;
-			this.op = Operation.None; 
-			Polynom newPoly= new Polynom(function);*/
+			 * //ComplexFunction newPoly= new ComplexFunction(((Polynom) function));
+			 * this.left = (Polynom)function; this.right = null; this.op = Operation.None;
+			 * Polynom newPoly= new Polynom(function);
+			 */
 			throw new Exception("function is not complex function");
 		}
 	}
 
-	
-
 	@Override
-	public double f(double x) throws Exception 
-	{
-		if(this instanceof ComplexFunction)
-		{
-			switch (this.op)
-			{
+	public double f(double x) throws Exception {
+		if (this instanceof ComplexFunction) {
+			switch (this.op) {
 			case Plus:
-				return this.left().f(x)+this.right().f(x);
+				return this.left().f(x) + this.right().f(x);
 			case Times:
-				return this.left().f(x)*this.right().f(x);
+				return this.left().f(x) * this.right().f(x);
 			case Divid:
-				if(this.right().f(x)==0)
-				{
+				if (this.right().f(x) == 0) {
 					throw new Exception("Could not divid in zero");
+				} else {
+					return this.left().f(x) / this.right().f(x);
 				}
-				else
-				{
-					return this.left().f(x)/this.right().f(x);
-				}
-				
+
 			case Max:
-				return Math.max(this.left().f(x),this.right().f(x));
+				return Math.max(this.left().f(x), this.right().f(x));
 			case Min:
-				return Math.min(this.left().f(x),this.right().f(x));
+				return Math.min(this.left().f(x), this.right().f(x));
 			case Comp:
 				return this.left().f(this.right().f(x));
 			case None:
@@ -99,82 +80,133 @@ public class ComplexFunction implements complex_function
 		}
 		return 0;
 	}
-			
+
 	@Override
 	public function initFromString(String s) 
 	{
-		s = s.toLowerCase();
-		//Polynom newPolynom= new Polynom(s);
-		
+		//s = s.toLowerCase();
+		// Polynom newPolynom= new Polynom(s);
 		int firstOpen = s.indexOf('(');
-		if (firstOpen <0) 
+		int numComma = 0;
+		if (firstOpen==-1)
 		{
-			try 
+			try
 			{
 				Polynom newPoly = new Polynom(s);
 				return newPoly;
+			} 
+			catch (Exception c)
+			{
+
 			}
-		    catch(Exception c)
-			{
-				
-			}	
 		}
-		String st=null;
+		else 
+		{
+		String st = null;
 		int start = -1;
-		int countBrace =0;
+		int countBrace = 0;
+		int indexSplit = 0;
 		ComplexFunction temp = new ComplexFunction();
-		String operationTemp=s.substring(0,firstOpen-1);
-		for (Operation c : Operation.values()) 
-		 {
-		        if (c.name().equals(operationTemp)) 
-		        {
-		            st=c.name();
-		        }
-		 }
-		if (st!=null) 
+		String operationTemp = s.substring(0, firstOpen);
+		//System.out.println(operationTemp);
+		for (Operation c : Operation.values())
 		{
-			start=s.indexOf(st);
-		}
-		if(start>=0 && s.endsWith(")")) 
-		{
-			String s1= s.substring(start+st.length(),s.length()-1);
-			for(int i = 0; i<s1.length(); i++) 
+			if (c.name().equals(operationTemp)) 
 			{
-				if(s1.charAt(i)=='(') 
-				{
-					countBrace++;
-				}
-				else if(s1.charAt(i)==')') 
-				{
-					countBrace--;
-				}
-				if (countBrace==0) 
-				{
-					break;
-				}
-				if(countBrace==1) 
-				{
-					function leftFun=temp.initFromString(s1.substring(1, i+1));
-					function rightFun=temp.initFromString((s1.substring(i+2,s1.length()-1)));
-					return ((ComplexFunction)leftFun).createComplex(st, rightFun);
-					//return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
-				}
+				st = c.name();
+				break;
 			}
 		}
 		
-		else
+		if (st != null) 
 		{
-			function leftPoly=new Polynom(s.substring(1,s.indexOf(',')));
-			function rightPoly=new Polynom(s.substring(s.indexOf(',')+1,s.length()-1));
-			return ((ComplexFunction)leftPoly).createComplex(st, rightPoly);
+			start = s.indexOf(st);
+		}
+		String splitByOp=s.substring(st.length()+1,s.length()-1);
+		for (int i =0; i<splitByOp.length(); i++) 
+		{
+			
+			if (splitByOp.charAt(i)=='(') 
+			{
+				countBrace++;
+			}
+			/**if (splitByOp.charAt(i)==')') 
+			{
+				countBrace;
+			}*/
+			if (splitByOp.charAt(i)==',') 
+			{
+				numComma++;
+			}
+			if (splitByOp.charAt(i)==',' &&numComma==countBrace)
+			{
+				indexSplit = i;
+			}
+		}
+		String s1  = splitByOp.substring(st.length()+1, indexSplit);
+		String s2 = splitByOp.substring(indexSplit+1,s.length()-1);
+		function leftFun = temp.initFromString(s1);
+		function rightFun = temp.initFromString(s2);
+		if (leftFun instanceof ComplexFunction ) 
+		{
+			return ((ComplexFunction) leftFun).createComplex(st, rightFun);
+		}
+		else 
+		{
+			return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
+		}
+		
+
+		
+		
+		/**
+		
+		if (start >= 0 && s.endsWith(")")) 
+		{
+			String s1 = s.substring(start + st.length(), s.length());
+			for (int i = 0; i < s1.length(); i++) 
+			{
+				if (s1.charAt(i) == '(') 
+				{
+					countBrace++;
+				} else if (s1.charAt(i) == ')') {
+					countBrace--;
+				}
+				if (countBrace == 0) {
+					break;
+				}
+
+				if (countBrace == 1) 
+				{
+					int lastComma = s1.lastIndexOf(',');
+					System.out.println(s1.substring(1, lastComma));
+					function leftFun = temp.initFromString(s1.substring(1, lastComma));
+					function rightFun = temp.initFromString((s1.substring(lastComma+1, s1.length()- 1)));
+					if (leftFun instanceof ComplexFunction ) 
+					{
+						return ((ComplexFunction) leftFun).createComplex(st, rightFun);
+					}
+					else 
+					{
+						return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
+					}
+					// return new ComplexFunction(leftFun,rightFun,Operation.valueOf(st));
+				}
+			}
+		}
+		else {
+			function leftPoly = new Polynom(s.substring(1, s.indexOf(',')));
+			function rightPoly = new Polynom(s.substring(s.indexOf(',') + 1, s.length() - 1));
+			return ((ComplexFunction) leftPoly).createComplex(st, rightPoly);
+		}
+		}*/
+	
 		}
 		return null;
-	}
-	
-	public function createComplex(String oper, function ff) 
-	{
-		switch (Operation.valueOf(oper))
-		{
+		}
+
+	public function createComplex(String oper, function ff) {
+		switch (Operation.valueOf(oper)) {
 		case Plus:
 			plus(ff);
 		case Times:
@@ -188,132 +220,117 @@ public class ComplexFunction implements complex_function
 		case Comp:
 			comp(ff);
 		case None:
-			//toCheck
+			// toCheck
 			break;
 		default:
 			break;
-	}
+		}
 		return this;
 	}
+
 	@Override
-	public function copy() 
-	{
-		function copyFun =  new ComplexFunction(this.left, this.right,this.op);
+	public function copy() {
+		function copyFun = new ComplexFunction(this.left, this.right, this.op);
 		return copyFun;
 	}
 
 	@Override
-	public void plus(function f1) 
-	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right,this.op);
+	public void plus(function f1) {
+		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Plus;
 	}
 
 	@Override
-	public void mul(function f1) 
-	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right,this.op);
+	public void mul(function f1) {
+		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Times;
 	}
 
 	@Override
-	public void div(function f1) 
-	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right,this.op);
+	public void div(function f1) {
+		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Divid;
-		
+
 	}
 
 	@Override
-	public void max(function f1) 
-	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right,this.op);
+	public void max(function f1) {
+		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Max;
-		
+
 	}
 
 	@Override
-	public void min(function f1) 
-	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right,this.op);
+	public void min(function f1) {
+		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Min;
-		
+
 	}
 
 	@Override
-	public void comp(function f1) 
-	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right,this.op);
+	public void comp(function f1) {
+		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Comp;
-		
+
 	}
 
 	@Override
-	public function left() 
-	{
+	public function left() {
 		return this.left;
 	}
 
 	@Override
-	public function right() 
-	{
+	public function right() {
 		return this.right;
 	}
 
 	@Override
-	public Operation getOp() 
-	{
+	public Operation getOp() {
 		return this.op;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return this.op.name() + '(' + this.left().toString() +',' + this.right().toString() +')';
-		
 	}
 
 	@Override
-	public boolean equals(Object obj) 
-	{
-		for (int i=0;i<100;i++) 
+	public String toString() {
+		if (this.right == null) 
 		{
-			double j = Math.random()*100;
-			if(obj instanceof ComplexFunction) 
-			{
+			return this.op.name() + '(' + this.left().toString()+')';
+		}
+		else 
+		{
+			return this.op.name() + '(' + this.left().toString() + ',' + this.right().toString() + ')';
+		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		for (int i = 0; i < 100; i++) {
+			double j = Math.random() * 100;
+			if (obj instanceof ComplexFunction) {
 				try {
-					if(!(this.f(j)==((ComplexFunction)obj).f(j))) 
-					{
+					if (!(this.f(j) == ((ComplexFunction) obj).f(j))) {
 						return false;
 					}
-				} 
-				catch (Exception e) 
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-			else 
-			{
+			} else {
 				try {
-					if(!(this.f(j)==((Polynom)obj).f(j))) 
-					{
+					if (!(this.f(j) == ((Polynom) obj).f(j))) {
 						return false;
 					}
-				} 
-				catch (Exception e) 
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -321,4 +338,3 @@ public class ComplexFunction implements complex_function
 		return true;
 	}
 }
-
