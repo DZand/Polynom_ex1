@@ -169,13 +169,13 @@ public class Functions_GUI implements functions
 		StdDraw.clear(StdDraw.WHITE);
 		StdDraw.setXscale(rx.get_min(),rx.get_min());
 		StdDraw.setYscale(ry.get_min(), ry.get_max());
-		////////vertical lines
+		//vertical lines
 		StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
 		for (int i =(int)rx.get_min(); i <= rx.get_max(); i=i+10) 
 		{
 			StdDraw.line(i, ry.get_min(), i, ry.get_max());
 		}
-		//////// horizontal  lines
+		//horizontal  lines
 		for (double i = ry.get_min(); i <= ry.get_max(); i=i+0.5) 
 		{
 			StdDraw.line(rx.get_min(), i, rx.get_max(), i);
