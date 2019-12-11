@@ -7,162 +7,129 @@ import org.junit.jupiter.api.Test;
 
 import Ex1.Monom;
 
-class MonomTest {
+class MonomTest 
+{
 	private static Monom excepted_Monom;
 	private static Monom actual_Monom;
 
 	@BeforeEach
-	void setUp() throws Exception {
-		this.excepted_Monom = new Monom(2, 3);
-		this.actual_Monom = new Monom(2, 3);
+	void setUp() throws Exception 
+	{
+		MonomTest.excepted_Monom = new Monom(3, 4);
+		MonomTest.actual_Monom = new Monom(3, 4);
 	}
 
-	/**
-	 * test Monom(String) constructor in the test , there is 2 inputs , valid monoms
-	 * and invalid monoms inputs. the test check 2 strings one is represent a valid
-	 * inputs , and the other invalid inputs. then split with the char ' ' , and
-	 * check if the string its working and make a monom . otherwise its fail
-	 */
-
 	@Test
-	void testMonomString() {
+	void testMonomConstructorString() 
+	{
 		String TheWrongSstr = "0.2*x^-1 1.a5 1a*x^2 x^ 5a";
 		String TheOkStr = "0.2x^1 1.5x^3 3.0x^2 x 5";
 		String[] arrMonom = TheOkStr.split(" ");
 		String[] arrMonomWrong = TheWrongSstr.split(" ");
-		for (int i = 0; i < arrMonom.length; i++) {
-			try { // Test a valid input
+		for (int i = 0; i < arrMonom.length; i++) 
+		{
+			try 
+			{ // Test a valid input
 				Monom testOk = new Monom(arrMonom[i]);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				fail("There is a valid input that not working");
 			}
-			try { // Test a wrong input
+			try 
+			{ // Test a wrong input
 				Monom testWrong = new Monom(arrMonomWrong[i]);
 				fail("There is a invalid input that working");
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 
 			}
-
 		}
-		/**
-		 * Manual checking
-		 */
-		this.excepted_Monom = new Monom("2x^3");
-		if (actual_Monom.get_coefficient() != this.excepted_Monom.get_coefficient())
-			fail("the String constructor is not working ,the coefficient value of  actual_Monom isn't the same as excepted_Monom");
-		else if (this.actual_Monom.get_power() != this.excepted_Monom.get_power())
-			fail("the String constructor is not working ,the power value of actual_Monom isn't the same as excepted_Monom");
+		MonomTest.excepted_Monom = new Monom("3x^4");
+		assertEquals(actual_Monom, MonomTest.excepted_Monom);	
 	}
 
-	/**
-	 * test Monom(Monom) constructor Manual checking
-	 */
+
 	@Test
-	void testMonomMonom() {
-		// fail("Not yet implemented");
+	void testMonomConstructorMonom() 
+	{
 		Monom testMonom = new Monom(excepted_Monom);
-		if (actual_Monom.get_coefficient() != testMonom.get_coefficient())
-			fail("the copy constructor is not working , the coefficient value of actual_Monom isn't the same as testMonom");
-		else if (this.actual_Monom.get_power() != testMonom.get_power())
-			fail("the  copy constructor is not working ,the power value isn't of actual_Monom isn't the same as testMonom");
+		assertEquals(actual_Monom, testMonom);
 	}
 
-	/**
-	 * testing Derivative() function with the web site : https://www.symbolab.com/
-	 */
+
 	@Test
-	void testDerivative() {
-		double excepted_coefficient = (this.actual_Monom.get_coefficient() * this.actual_Monom.get_power());
-		int excepted_power = (this.actual_Monom.get_power() - 1);
-		this.actual_Monom = this.actual_Monom.derivative();
-		if (this.actual_Monom.get_coefficient() != excepted_coefficient)
-			fail("the Derivative function is not working ,the coefficient value of actual_Monom isn't the same as excepted_coefficient ");
-		if (this.actual_Monom.get_power() != excepted_power)
-			fail("the Derivative function is not working ,the power value of actual_Monom isn't the same as excepted_power");
+	void testDerivative() 
+	{
+		double excepted_coefficient = (MonomTest.actual_Monom.get_coefficient() * MonomTest.actual_Monom.get_power());
+		int excepted_power = (MonomTest.actual_Monom.get_power() - 1);
+		MonomTest.actual_Monom = MonomTest.actual_Monom.derivative();
+		assertEquals(actual_Monom.get_coefficient(), excepted_coefficient);
+		assertEquals(actual_Monom.get_power(), excepted_power);
 	}
 
-	/**
-	 * testing F() function with the web site : https://www.symbolab.com/
-	 */
 	@Test
-	void testF() {
+	void testF() 
+	{
 		double x = 3;
-		double excepted_FValue = (this.actual_Monom.get_coefficient() * Math.pow(x, this.actual_Monom.get_power()));
-		if (excepted_FValue != this.actual_Monom.f(x))
-			fail("The F function is not working the f value is not as the excepted_FValue");
+		double excepted_FValue = (MonomTest.actual_Monom.get_coefficient() * Math.pow(x, MonomTest.actual_Monom.get_power()));
+		assertEquals(excepted_FValue,MonomTest.actual_Monom.f(x));
 	}
 
-	/**
-	 * testing add(Monom) Manual checking
-	 */
-	@Test
-	void testAdd() {
-		this.actual_Monom.add(new Monom(2, 3));
-		if (actual_Monom.get_coefficient() != 4)
-			fail("The add function is not working well, the coefficient value not as the excepted value  ");
-		if (actual_Monom.get_power() != 3)
-			fail("The add function is not working well, the power value not as the excepted value  ");
-	}
 
-	/**
-	 * testing Multiply() function with the web site : https://www.symbolab.com/
-	 */
 	@Test
-	void testMultiply() {
-		double excepted_coefficient = this.actual_Monom.get_coefficient() * 3;
-		int excepted_power = this.actual_Monom.get_power() + 5;
-		this.actual_Monom.multipy(new Monom(3, 5));
-		if (actual_Monom.get_coefficient() != excepted_coefficient)
-			fail("The Multiply function is not working well, the coefficient value not as the excepted value  ");
-		if (actual_Monom.get_power() != excepted_power)
-			fail("The Multiply function is not working well, the power value not as the excepted value  ");
-
-	}
-
-	/**
-	 * testing Is_equal(Monom) function
-	 */
-	@Test
-	void testIs_equal() {
-		boolean ans = this.actual_Monom.equals(this.excepted_Monom);
-		if (!ans)
-			fail("There is problem with the equal function");
-	}
-
-	/**
-	 * testing is_zero function
-	 */
-	@Test
-	void testIs_zero() {
-		this.actual_Monom = new Monom(0, 3);
-		boolean ans = this.actual_Monom.isZero();
-		if (!ans)
-			fail("The Is_Zero function is not working well, coefficient is not 0");
+	void testAdd() 
+	{
+		MonomTest.actual_Monom.add(new Monom(3, 4));
+		assertEquals(actual_Monom.get_coefficient(),6);
+		assertEquals(actual_Monom.get_power(),4);
 	}
 
 	@Test
-	void testGet_power() {
-		if (this.actual_Monom.get_power() != 3)
-			fail("Not yet implemented");
+	void testMultiply() 
+	{
+		double excepted_coefficient = MonomTest.actual_Monom.get_coefficient() * 3;
+		int excepted_power = MonomTest.actual_Monom.get_power() + 5;
+		MonomTest.actual_Monom.multipy(new Monom(3, 5));
+		assertEquals(actual_Monom.get_coefficient(),excepted_coefficient);
+		assertEquals(actual_Monom.get_power(),excepted_power);
+	}
+
+
+	@Test
+	void testIs_equal() 
+	{
+		boolean ans = MonomTest.actual_Monom.equals(MonomTest.excepted_Monom);
+		assertTrue(ans);
+	}
+
+
+	@Test
+	void testIs_zero() 
+	{
+		MonomTest.actual_Monom = new Monom(0, 3);
+		boolean ans = MonomTest.actual_Monom.isZero();
+		assertTrue(ans);
 	}
 
 	@Test
-	void testGet_coefficient() {
-		if (this.actual_Monom.get_coefficient() != 2)
-			fail("Not yet implemented");
+	void testGet_power() 
+	{
+		assertEquals(MonomTest.actual_Monom.get_power(),4);
 	}
 
-	/**
-	 * testing to toString with Monom(String) constructor
-	 */
 	@Test
-	void testToString() {
-		this.actual_Monom = new Monom(this.actual_Monom.toString());
-		if (actual_Monom.get_coefficient() != this.excepted_Monom.get_coefficient())
-			fail("the constructor is not working , the coefficient value of  actual_Monom isn't the same as excepted_Monom");
-		if (this.actual_Monom.get_power() != this.excepted_Monom.get_power())
-			fail("the constructor is not working ,the power value isn't of actual_Monom isn't the same as excepted_Monom");
+	void testGet_coefficient() 
+	{
+		assertEquals(MonomTest.actual_Monom.get_coefficient(),3);
+	}
 
+	@Test
+	void testToStringConstructor() 
+	{
+		MonomTest.actual_Monom = new Monom(MonomTest.actual_Monom.toString());
+		assertEquals(actual_Monom,excepted_Monom);
 	}
 
 }

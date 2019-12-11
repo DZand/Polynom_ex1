@@ -1,14 +1,118 @@
 package Ex1;
 
-public class PolynomTest {
-	public static void main(String[] args) throws Exception {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+public class PolynomTest 
+{
+	@Test
+	public void testConstructorToString()
+	{
+		Polynom p1 = new Polynom("1.0x^2-2.0x^1+1.0x^0");
+		Polynom p3 = new Polynom();
+		assertEquals(p1.toString(),"1.0x^2-2.0x^1+1.0x^0");
+		assertEquals(p3.toString(),"0.0x^0");
+	}
+	
+	@Test
+	public void testF()
+	{
+		Polynom p1 = new Polynom("1.0x^2-2.0x^1+1.0x^0");
+		assertEquals(p1.f(4),9.0, 1.0);
+	}
+	
+	@Test
+	public void testAdd()
+	{
+		Polynom p1 = new Polynom("1.0x^2-2.0x^1+1.0x^0");
+		Polynom p2 = new Polynom("2.0x^1+1.0x^0");
+		p1.add(p2);
+		assertEquals(p1.toString(),"1.0x^2+2.0x^0");
+		Monom m1 = new Monom("x^3");
+		Monom m2 = new Monom(2, 2);
+		p1.add(m1);
+		p2.add(m2);
+		assertEquals(p1.toString(),"1.0x^3+1.0x^2+2.0x^0");
+		assertEquals(p2.toString(),"2.0x^2+2.0x^1+1.0x^0");
+	}
+	
+	@Test
+	public void testSubstract()
+	{
+		Polynom p4 = new Polynom("5x^3+2x+1");
+		Polynom p5 = new Polynom("2x^2+1");
+		p4.substract(p5);
+		assertEquals(p4.toString(),"5.0x^3-4.0x^2+2.0x^1-1.0x^0");
+	}
+	
+	@Test
+	public void testMultiply()
+	{
+		Polynom p6 = new Polynom("x^2+x");
+		Polynom p7 = new Polynom("2x+1");
+		p6.multiply(p7);
+		assertEquals(p6.toString(),"2.0x^3+3.0x^2+1.0x^1");
+	}
+	
+	@Test
+	public void testEquals()
+	{
+		Polynom p8 = new Polynom("x^2+x");
+		Polynom p9 = new Polynom("2x+1");
+		assertFalse(p8.toString().equals(p9.toString()));
+	}
+	
+	@Test
+	public void testIsZero()
+	{
+		Polynom p10 = new Polynom("0");
+		assertTrue(p10.isZero());
+	}
+	
+	@Test
+	public void testRoot()
+	{
+		Polynom p11 = new Polynom("x^2-2");
+		assertEquals(p11.root(-1, 3, 0.001),Math.sqrt(2), 1.0);
+	}
+	
+	@Test
+	public void testCopy()
+	{
+		Polynom p12 = new Polynom("x^2-2x+1");
+		Polynom_able p13 = p12.copy();
+		assertEquals(p13.toString(),"1.0x^2-2.0x^1+1.0x^0");
+	}
+	
+	@Test
+	public void testDeritive()
+	{
+		Polynom p14 = new Polynom("x^2-2x+1");
+		Polynom_able p15=p14.derivative();
+		assertEquals(p15.toString(),"2.0x^1-2.0x^0");
+	}
+	
+	@Test
+	public void testArea()
+	{
+		Polynom p15 = new Polynom("x^2");
+		assertEquals(p15.area(-6, 3, 0.001),81.0, 1.0);
+	}
+	
+	/**
+	public static void main(String[] args) throws Exception 
+	{
 		// test1();
 		// test2();
 		positiveTests();
 
 	}
 
-	public static void test1() throws Exception {
+	public static void test1() throws Exception 
+	{
 		System.out.println("*****  Test1:  *****");
 		Polynom p1 = new Polynom();
 		String[] monoms = { "1", "x", "x^2", "0.5x^2" };
@@ -32,7 +136,8 @@ public class PolynomTest {
 
 	}
 
-	public static void test2() throws Exception {
+	public static void test2() throws Exception 
+	{
 		System.out.println("*****  Test2:  *****");
 		Polynom p1 = new Polynom(), p2 = new Polynom();
 		String[] monoms1 = { "2", "-x", "-3.2x^2", "4", "-1.5x^2" };
@@ -41,7 +146,8 @@ public class PolynomTest {
 			Monom m = new Monom(monoms1[i]);
 			p1.add(m);
 		}
-		for (int i = 0; i < monoms2.length; i++) {
+		for (int i = 0; i < monoms2.length; i++) 
+		{
 			Monom m = new Monom(monoms2[i]);
 			p2.add(m);
 		}
@@ -55,8 +161,9 @@ public class PolynomTest {
 		// Polynom_able pp1 = Polynom.parse(s1);
 		// System.out.println("from string: "+pp1);
 	}
-
-	public static void positiveTests() throws Exception {
+	public static void positiveTests() throws Exception 
+	{
+		
 		System.out.println("*****  Test3 constructor:  *****");
 		Polynom p1 = new Polynom("x^2-2x+1");
 		Polynom p3 = new Polynom();
@@ -79,13 +186,15 @@ public class PolynomTest {
 		p2.add(m2);
 		System.out.println(m1 + " m1 add to p1 : " + p1.toString());
 		System.out.println(m2 + " m2 add to p2 : " + p2.toString());
-
+		
 		System.out.println("*****  Test7 substract:  *****");
 		Polynom p4 = new Polynom("5x^3+2x+1");
 		Polynom p5 = new Polynom("2x^2+1");
 		System.out.println("This is the Polynom p4: " + p4.toString());
+		
 		p4.substract(p5);
 		System.out.println(p4 + "p4 substract from the Polynom p5: " + p4.toString());
+		
 		// p5.substract(p4);
 		// System.out.println(p5 + "p5 substract from the Polynom p4: " +
 		// p5.toString());
@@ -96,7 +205,7 @@ public class PolynomTest {
 		Polynom p7 = new Polynom("2x+1");
 		p6.multiply(p7);
 		System.out.println("The ans should be : 2x^3 + 3x^2 + x ->" + p6.toString());
-
+		
 		System.out.println("*****  Test9 equals:  *****");
 		Polynom p8 = new Polynom("x^2+x");
 		Polynom p9 = new Polynom("2x+1");
@@ -105,24 +214,23 @@ public class PolynomTest {
 		System.out.println("*****  Test10 isZero:  *****");
 		Polynom p10 = new Polynom("0");
 		System.out.println("The ans should be yes -->" + p10.isZero());
-
+		
 		System.out.println("*****  Test11 root:  *****");
 		Polynom p11 = new Polynom("x^2-2");
 		System.out.println("The ans should be : sqrt(2) -->" + p11.root(-1, 3, 0.001));
-
+		
 		System.out.println("*****  Test12 copy:  *****");
 		Polynom p12 = new Polynom("x^2-2x+1");
 		Polynom_able p13 = p12.copy();
 		System.out.println("This is the Polynom should be : x^2 - 2x + 1 --> " + p13.toString());
-
 		System.out.println("*****  Test13 derivative:  *****");
 		Polynom p14 = new Polynom("x^2-2x+1");
 		System.out.println("The ans should be : 2x - 2 --> " + p14.derivative().toString());
-
+		
 		System.out.println("*****  Test14 area:  *****");
 		Polynom p15 = new Polynom("x^2");
 		System.out.println("The ans should be : 80.9999 --> " + p15.area(-6, 3, 0.001));
-
+		 
 	}
-
+*/
 }
