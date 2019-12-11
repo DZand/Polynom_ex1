@@ -178,18 +178,19 @@ public class Functions_GUI implements functions
 		// x axis
 		StdDraw.setPenColor(StdDraw.BLACK);
 		StdDraw.setPenRadius(0.005);
-		StdDraw.line(rx.get_min(), 0, ry.get_max(), 0);
+		StdDraw.line(rx.get_min(), 0, rx.get_max(), 0);
 		StdDraw.setFont(new Font("TimesRoman", Font.BOLD, 15));
-		for (int i = (int) rx.get_min(); i <= rx.get_max(); i++) 
+		for (int i = (int) rx.get_min()+1; i <= rx.get_max(); i++) 
 		{
 			StdDraw.text(i, -0.07, Integer.toString(i));
 		}
 		// y axis
 		StdDraw.line(0, ry.get_min(), 0, ry.get_max());
-		for (int k = (int)ry.get_min(); k <= ry.get_max(); k ++) 
+		for (int k = (int)ry.get_min()+1; k <= ry.get_max(); k ++) 
 		{
 			StdDraw.text(-0.07, k, Integer.toString(k));
 		}
+		/**
 		for (function fun : listOfFunction) 
 		{
 			float red = rand.nextFloat();
@@ -215,6 +216,44 @@ public class Functions_GUI implements functions
 			{
 				StdDraw.line(x[i], y[i], x[i + 1], y[i + 1]);
 			}
+		}*/
+		
+
+		Color[] colors = {StdDraw.BLUE, StdDraw.BLUE.CYAN, StdDraw.MAGENTA, StdDraw.ORANGE, StdDraw.RED, StdDraw.GREEN, StdDraw.PINK};
+		
+		double size=rx.get_max()-rx.get_min();
+		double x_step = size/resolution;
+		for (int i = 0; i < size(); i++) 
+		{
+			StdDraw.setPenColor(colors[i % colors.length]);
+			function fun = get(i);
+			Double f, fStep = null;
+			try 
+			{
+				f = fun.f(rx.get_min());				
+			} 
+			catch (Exception e) 
+			{
+				f=null;
+			}
+			for (double x = rx.get_min(); x < rx.get_max(); x += x_step) 
+			{
+				try 
+				{
+					fStep = fun.f(x+x_step);
+					if(f != null && fStep != null)
+						StdDraw.line(x, f, x+x_step, fStep);
+				} 
+				catch (Exception e) 
+				{
+					fStep = null;
+				} 
+				finally 
+				{
+					f = fStep;										
+				}
+			}
+		
 		}
 	}
 
