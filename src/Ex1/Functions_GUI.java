@@ -117,7 +117,8 @@ public class Functions_GUI implements functions
 		String line = "";
 		function tempFunction = new ComplexFunction();
 
-		try {
+		try 
+		{
 			BufferedReader br = new BufferedReader(new FileReader(file));
 
 			while ((line = br.readLine()) != null) 
@@ -125,7 +126,8 @@ public class Functions_GUI implements functions
 				listOfFunction.add(tempFunction.initFromString(line));
 			}
 			br.close();
-		} catch (IOException e) 
+		} 
+		catch (IOException e) 
 		{
 			e.printStackTrace();
 			System.out.println("could not read file");
@@ -135,7 +137,8 @@ public class Functions_GUI implements functions
 	@Override
 	public void saveToFile(String file) throws IOException 
 	{
-		try {
+		try 
+		{
 			PrintWriter pw = new PrintWriter(new File(file));
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < listOfFunction.size(); i++) 
@@ -145,7 +148,8 @@ public class Functions_GUI implements functions
 			}
 			pw.write(sb.toString());
 			pw.close();
-		} catch (FileNotFoundException e) 
+		} 
+		catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
 			return;
