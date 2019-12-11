@@ -1,68 +1,93 @@
 package Ex1;
 
-public class ComplexFunction implements complex_function {
+public class ComplexFunction implements complex_function 
+{
 	function right;
 	function left;
 	Operation op;
 
-	public ComplexFunction(function left2, function right2, Operation op2) {
+
+	/**
+	 * Default constructor create empty complex function with operation None and polynom zero
+	 */
+	public ComplexFunction() 
+	{
+		this.left = new ComplexFunction(new Polynom());
+		this.right = null;
+		this.op = Operation.None;
+	}
+	/**
+	 * constructor that get polynom and initialize new complex function with none operator
+	 * @param p3
+	 */
+	public ComplexFunction(Polynom p3) 
+	{
+		this.left = p3;
+		this.right = null;
+		this.op = Operation.None;
+	}
+	/**
+	 * constructor that get string as operator, and 2 functions
+	 * @param string
+	 * @param p1
+	 * @param p2
+	 */
+	public ComplexFunction( function p1, function p2, String string) 
+	{
+		this.left = p1;
+		this.right = p2;
+		this.op = Operation.valueOf(string);
+	}
+	/**
+	 * constructor that get operator and 2 functions
+	 * @param left2
+	 * @param right2
+	 * @param op2
+	 */
+	public ComplexFunction(function left2, function right2, Operation op2) 
+	{
 		this.left = left2;
 		this.right = right2;
 		this.op = op2;
 	}
 
-	public ComplexFunction() {
-		this.left = null;
-		this.right = null;
-		this.op = Operation.None;
-	}
-
-	public ComplexFunction(Polynom p3) {
-		this.left = p3;
-		this.right = null;
-		this.op = Operation.None;
-	}
-
-	public ComplexFunction(String string, Polynom p1, Polynom p2) {
-		this.left = p1;
-		this.right = p2;
-		this.op = Operation.valueOf(string);
-	}
-
-	public ComplexFunction(String string, Polynom right2, ComplexFunction cf3) {
-		this.left = right2;
-		this.right = cf3;
-		this.op = Operation.valueOf(string);
-
-	}
-
-	public ComplexFunction(function function) throws Exception {
-		if (function instanceof ComplexFunction) {
+	/**
+	 * Constructor that gets one function and if the function is complex function initialize.
+	 * @param function
+	 * @throws Exception in case the function is not complex function
+	 */
+	public ComplexFunction(function function) throws Exception
+	{
+		if (function instanceof ComplexFunction) 
+		{
 			this.left = ((ComplexFunction) function).left();
 			this.right = ((ComplexFunction) function).right();
 			this.op = ((ComplexFunction) function).getOp();
-		} else if (function instanceof Polynom) {
-			/**
-			 * //ComplexFunction newPoly= new ComplexFunction(((Polynom) function));
-			 * this.left = (Polynom)function; this.right = null; this.op = Operation.None;
-			 * Polynom newPoly= new Polynom(function);
-			 */
+		} 
+		else if (function instanceof Polynom) 
+		{
 			throw new Exception("function is not complex function");
 		}
 	}
 
 	@Override
-	public double f(double x) throws Exception {
-		if (this instanceof ComplexFunction) {
-			switch (this.op) {
+	public double f(double x) throws Exception 
+	{
+		if (this instanceof ComplexFunction) 
+		{
+			switch (this.op) 
+			{
 			case Plus:
 				return this.left().f(x) + this.right().f(x);
 			case Times:
 				return this.left().f(x) * this.right().f(x);
 			case Divid:
-				if (this.right().f(x) == 0) {
-					throw new Exception("Could not divid in zero");
-				} else {
+				if (this.right().f(x) == 0)
+				{
+					throw new ArithmeticException("Could not divid in zero");
+				} 
+				else 
+				{
 					return this.left().f(x) / this.right().f(x);
 				}
 
@@ -75,10 +100,13 @@ public class ComplexFunction implements complex_function {
 			case None:
 				return this.left.f(x);
 			default:
-				return 0;
+				throw new RuntimeException("Operation unknown");
 			}
 		}
-		return 0;
+		else
+		{
+			throw new RuntimeException("Not a complex function object");
+		}
 	}
 
 	@Override
@@ -102,6 +130,11 @@ public class ComplexFunction implements complex_function {
 				stringOperator = c.name();
 				break;
 			}
+		}
+		
+		if(stringOperator==null)
+		{
+			throw new RuntimeException("Operator is NULL or illegale ");
 		}
 
 		//count how many open brackets before the first close bracket
@@ -148,40 +181,16 @@ public class ComplexFunction implements complex_function {
 		
 
 }
-
-	public function createComplex(String oper, function ff)
-	{
-		switch (Operation.valueOf(oper)) 
-		{
-		case Plus:
-			plus(ff);
-		case Times:
-			mul(ff);
-		case Divid:
-			div(ff);
-		case Max:
-			max(ff);
-		case Min:
-			min(ff);
-		case Comp:
-			comp(ff);
-		case None:
-			// toCheck
-			break;
-		default:
-			break;
-		}
-		return this;
-	}
-
 	@Override
-	public function copy() {
+	public function copy() 
+	{
 		function copyFun = new ComplexFunction(this.left, this.right, this.op);
 		return copyFun;
 	}
 
 	@Override
-	public void plus(function f1) {
+	public void plus(function f1) 
+	{
 		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
@@ -189,7 +198,8 @@ public class ComplexFunction implements complex_function {
 	}
 
 	@Override
-	public void mul(function f1) {
+	public void mul(function f1) 
+	{
 		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
@@ -197,7 +207,8 @@ public class ComplexFunction implements complex_function {
 	}
 
 	@Override
-	public void div(function f1) {
+	public void div(function f1) 
+	{
 		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
@@ -206,7 +217,8 @@ public class ComplexFunction implements complex_function {
 	}
 
 	@Override
-	public void max(function f1) {
+	public void max(function f1) 
+	{
 		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
@@ -215,7 +227,8 @@ public class ComplexFunction implements complex_function {
 	}
 
 	@Override
-	public void min(function f1) {
+	public void min(function f1) 
+	{
 		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
@@ -224,7 +237,8 @@ public class ComplexFunction implements complex_function {
 	}
 
 	@Override
-	public void comp(function f1) {
+	public void comp(function f1) 
+	{
 		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
 		this.left = temp;
 		this.right = f1;
@@ -233,22 +247,26 @@ public class ComplexFunction implements complex_function {
 	}
 
 	@Override
-	public function left() {
+	public function left() 
+	{
 		return this.left;
 	}
 
 	@Override
-	public function right() {
+	public function right() 
+	{
 		return this.right;
 	}
 
 	@Override
-	public Operation getOp() {
+	public Operation getOp() 
+	{
 		return this.op;
 	}
 
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		if (this.right == null) 
 		{
 			return this.op.name() + '(' + this.left().toString()+')';
@@ -260,27 +278,46 @@ public class ComplexFunction implements complex_function {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		for (int i = 0; i < 100; i++) {
+	public boolean equals(Object obj) 
+	{
+		for (int i = 0; i < 100; i++) 
+		{
 			double j = Math.random() * 100;
-			if (obj instanceof ComplexFunction) {
-				try {
-					if (!(this.f(j) == ((ComplexFunction) obj).f(j))) {
+			if (obj instanceof ComplexFunction) 
+			{
+				try 
+				{
+					if(!equalsHelp(this.f(j),((ComplexFunction) obj).f(j)))
+					{
 						return false;
 					}
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
-			} else {
-				try {
-					if (!(this.f(j) == ((Polynom) obj).f(j))) {
+			} 
+			else 
+			{
+				try 
+				{
+					if(!equalsHelp(this.f(j),((Polynom) obj).f(j)))
+					{
 						return false;
 					}
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
 		}
 		return true;
+	}
+
+	public boolean equalsHelp(double num1, double num2)
+	{
+		boolean equal=Math.abs(num1-num2) < Monom.EPSILON;
+		return equal;
 	}
 }
