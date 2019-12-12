@@ -1,7 +1,11 @@
 #polynom
+
 Authors: Danielle Zand Tehila Uzan
+
 Monom 
+
 The monom class represent monom from the form :
+
 ax^b -> a represent the coefficient of the monom (can be double) while b represent the power of the monom (must be integer).
 This class contain the following functions:
 •	Add – function add monom to monom
