@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import com.sun.org.glassfish.external.probe.provider.StatsProviderManagerDelegate;
 
 import java.awt.Font;
@@ -160,7 +161,6 @@ public class Functions_GUI implements functions
 	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) 
 	{
 		Random rand = new Random();
-		StdDraw.clear(StdDraw.WHITE);
 		StdDraw.setCanvasSize(width, height);
 		StdDraw.setXscale(rx.get_min(), rx.get_max());
 		StdDraw.setYscale(ry.get_min(), ry.get_max());
@@ -190,7 +190,7 @@ public class Functions_GUI implements functions
 		{
 			StdDraw.text(-0.07, k, Integer.toString(k));
 		}
-		/**
+		double stepForX = Math.abs((rx.get_max()-rx.get_min())/resolution);
 		for (function fun : listOfFunction) 
 		{
 			float red = rand.nextFloat();
@@ -198,65 +198,16 @@ public class Functions_GUI implements functions
 			float blue = rand.nextFloat();
 			Color setColor = new Color(red, green, blue);
 			StdDraw.setPenColor(setColor);
-			double[] x = new double[resolution + 1];
-			double[] y = new double[resolution + 1];
-			for (int i = 1; i < resolution; i++) 
+			for (double i = rx.get_min(); i <= rx.get_max(); i+= stepForX) 
 			{
-				x[i] = i;
-				try 
-				{
-					y[i] = fun.f(i);
-				} 
-				catch (Exception e) 
-				{
+				try {
+					StdDraw.line(i, fun.f(i), i+stepForX, fun.f(i+stepForX));
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			for (int i = 0; i < resolution; i++) 
-			{
-				StdDraw.line(x[i], y[i], x[i + 1], y[i + 1]);
-			}
-		}*/
-		
-
-		Color[] colors = {StdDraw.BLUE, StdDraw.BLUE.CYAN, StdDraw.MAGENTA, StdDraw.ORANGE, StdDraw.RED, StdDraw.GREEN, StdDraw.PINK};
-		
-		double size=rx.get_max()-rx.get_min();
-		double x_step = size/resolution;
-		for (int i = 0; i < size(); i++) 
-		{
-			StdDraw.setPenColor(colors[i % colors.length]);
-			function fun = get(i);
-			Double f, fStep = null;
-			try 
-			{
-				f = fun.f(rx.get_min());				
-			} 
-			catch (Exception e) 
-			{
-				f=null;
-			}
-			for (double x = rx.get_min(); x < rx.get_max(); x += x_step) 
-			{
-				try 
-				{
-					fStep = fun.f(x+x_step);
-					if(f != null && fStep != null)
-						StdDraw.line(x, f, x+x_step, fStep);
-				} 
-				catch (Exception e) 
-				{
-					fStep = null;
-				} 
-				finally 
-				{
-					f = fStep;										
-				}
-			}
-		
 		}
 	}
-
 	@Override
 	public void drawFunctions(String json_file) 
 	{
