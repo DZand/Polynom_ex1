@@ -280,9 +280,13 @@ public class ComplexFunction implements complex_function
 	@Override
 	public boolean equals(Object obj) 
 	{
-		for (int i = 0; i < 5; i++) 
+		for (int i = 1; i < 5; i++) 
 		{
 			int j = (int)Math.random() * 100;
+			if(j==0)
+			{
+				continue;
+			}
 			if (obj instanceof ComplexFunction) 
 			{
 				try 
