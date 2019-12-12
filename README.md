@@ -1,6 +1,10 @@
-Polynoms 
+#Polynoms 
+
+
 Authors: Danielle Zand Tehila Uzan 
-Monom  
+
+
+#Monom  
 The monom class represent monom from the form : 
 ax^b -> a represent the coefficient of the monom (can be double) while b represent the power of the monom (must be integer). 
 This class contain the following functions:
@@ -13,7 +17,9 @@ This class contain the following functions:
 •	equals – check if two monom is equals. 
 •	isMonomStringValid - check if the monom contains only valid charcter.  
  
-polynom 
+#polynom 
+
+
 polynom class represent polynom from the form: 
 •	ax^b+ax^b-ax^b -> the polynom contains from monom object.
 This class contain the following functions: 
@@ -31,7 +37,9 @@ This class contain the following functions:
 •	isPolynomStringValid – check if the polynom contains only valid character.  
 •	removeZZeroMonoms – function that in case thrae is zero monon is remove it from the polynom
 
-ComplexFunction
+#ComplexFunction
+
+
 complex function class represent function from the type: 
 •	Operation(function,function)
 This class contain the following functions:
@@ -49,7 +57,9 @@ This class contain the following functions:
 •	toSring() - return string of ComplexFunction
 •	equals(Object) - check if Object equals to ComplexFunction.
 
-Function_GUI 
+#Function_GUI
+
+
 Function_gui class represent geaf of function.
 function: 
 •	function from collection of arrayList that impement to arrayList of function: size(), isEmpty(), contains, Iterator(), toArray(), add(function), remove(object), containsAll(), addAll(function), removeAll(), retainAll(), clear().
