@@ -1,4 +1,4 @@
-#poltnom
+#polynom
 Authors: Danielle Zand Tehila Uzan
 Monom 
 The monom class represent monom from the form :
@@ -30,5 +30,24 @@ This class contain the following functions:
 •	area – This function compute Riemann's Integral over this Polynom starting from x0, till x1 using eps size steps.
 •	isPolynomStringValid – check if the polynom contains only valid character. 
 •	removeZZeroMonoms – function that in case thrae is zero monon is remove it from the polynom
+
+ComplexFunction
+complex function represent function from the type: Operation(function,function)
+This class contain the following functions:
+• builder:
+    • defauly builder
+    • polynom-> ComplexFunction: None(function)
+    • function,function,string-> ComplexFunction: valueOfString(function, function)
+    • function, function, operation-> ComplexFunction: Operation(function, function)
+    • function-> ComplexFunction: Operation(function, function)
+• function: 
+    • f(x) - function calculate the value of y in a given x
+    • initFromString(String) - function that get Sring and build from him ComplexFunction
+    • copy() - copy the ComplexFunction
+    • calculate function - plas(function), mul(function), div(function), max(function), min(function), comp(function)
+    • toSring() - return string of ComplexFunction
+    • equals(Object) - check if Object equals to ComplexFunction.
+
+Function_GUI
 
 
