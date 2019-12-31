@@ -7,7 +7,7 @@ import java.io.Serializable;
  * x are real numbers.
  **/
 public interface function extends Serializable {
-	public double f(double x) throws Exception;
+	public double f(double x);
 
 	/**
 	 * return a String representing this complex function

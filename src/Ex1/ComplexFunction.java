@@ -32,7 +32,7 @@ public class ComplexFunction implements complex_function
 	 * @param p1
 	 * @param p2
 	 */
-	public ComplexFunction( function p1, function p2, String string) 
+	public ComplexFunction(String string, function p1, function p2) 
 	{
 		this.left = p1;
 		this.right = p2;
@@ -44,7 +44,7 @@ public class ComplexFunction implements complex_function
 	 * @param right2
 	 * @param op2
 	 */
-	public ComplexFunction(function left2, function right2, Operation op2) 
+	public ComplexFunction(Operation op2,function left2, function right2) 
 	{
 		this.left = left2;
 		this.right = right2;
@@ -71,7 +71,7 @@ public class ComplexFunction implements complex_function
 	}
 
 	@Override
-	public double f(double x) throws Exception 
+	public double f(double x)
 	{
 		if (this instanceof ComplexFunction) 
 		{
@@ -177,21 +177,21 @@ public class ComplexFunction implements complex_function
 		String s2  = s.substring(indexSplit+1, s.length()-1);
 		function leftFun = temp.initFromString(s1);
 		function rightFun = temp.initFromString(s2);
-		return new ComplexFunction(leftFun,rightFun,Operation.valueOf(stringOperator));
+		return new ComplexFunction(Operation.valueOf(stringOperator),leftFun,rightFun);
 		
 
 }
 	@Override
 	public function copy() 
 	{
-		function copyFun = new ComplexFunction(this.left, this.right, this.op);
+		function copyFun = new ComplexFunction(this.op, this.left, this.right);
 		return copyFun;
 	}
 
 	@Override
 	public void plus(function f1) 
 	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
+		ComplexFunction temp = new ComplexFunction(this.op,this.left, this.right);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Plus;
@@ -200,7 +200,7 @@ public class ComplexFunction implements complex_function
 	@Override
 	public void mul(function f1) 
 	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
+		ComplexFunction temp = new ComplexFunction(this.op,this.left, this.right);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Times;
@@ -209,7 +209,7 @@ public class ComplexFunction implements complex_function
 	@Override
 	public void div(function f1) 
 	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
+		ComplexFunction temp = new ComplexFunction(this.op,this.left, this.right);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Divid;
@@ -219,7 +219,7 @@ public class ComplexFunction implements complex_function
 	@Override
 	public void max(function f1) 
 	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
+		ComplexFunction temp = new ComplexFunction(this.op ,this.left, this.right);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Max;
@@ -229,7 +229,7 @@ public class ComplexFunction implements complex_function
 	@Override
 	public void min(function f1) 
 	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
+		ComplexFunction temp = new ComplexFunction(this.op ,this.left, this.right);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Min;
@@ -239,7 +239,7 @@ public class ComplexFunction implements complex_function
 	@Override
 	public void comp(function f1) 
 	{
-		ComplexFunction temp = new ComplexFunction(this.left, this.right, this.op);
+		ComplexFunction temp = new ComplexFunction(this.op , this.left, this.right);
 		this.left = temp;
 		this.right = f1;
 		this.op = Operation.Comp;
