@@ -32,11 +32,12 @@ public class ComplexFunction implements complex_function
 	 * @param p1
 	 * @param p2
 	 */
-	public ComplexFunction(String string, function p1, function p2) 
+	public ComplexFunction(String str, function p1, function p2) 
 	{
 		this.left = p1;
 		this.right = p2;
-		this.op = Operation.valueOf(string);
+		String strParse = parseString(str);
+		this.op = Operation.valueOf(strParse);
 	}
 	/**
 	 * constructor that get operator and 2 functions
@@ -323,5 +324,42 @@ public class ComplexFunction implements complex_function
 	{
 		boolean equal=Math.abs(num1-num2) < Monom.EPSILON;
 		return equal;
+	}
+	public String parseString (String str) 
+	{ 
+		switch(str) 
+		{
+		case "plus":
+			return "Plus";
+		case "Plus":
+			return "Plus";
+		case "max":
+			return "Max";
+		case "Max":
+			return "Max";
+		case "mul":
+			return "Times";
+		case "Mul":
+			return "Times";
+		case "Times":
+			return "Times";
+		case "divid":
+			return "Divid";
+		case "div":
+			return "Divid";
+		case "Divid":
+			return "Divid";
+		case "comp":
+			return "Comp";
+		case "Comp":
+			return "Comp";
+		case "error":
+			return "Error";
+		case "Error":
+			return "Error";
+		default:
+			return "None";
+		}
+		
 	}
 }
